@@ -700,6 +700,54 @@ button {
   color: var(--color-warn-text);
 }
 
+/* Tappable "do this on the walk" card on the hunt screen. Angular slanted
+   parallelogram, matching the pub cards and stat boxes below it. */
+.travel-banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  text-align: left;
+  /* Extra horizontal padding keeps content clear of the slanted edges. */
+  padding: var(--space-3) calc(var(--space-4) + var(--slant));
+  /* Warm wine→raspberry to stand out as an active "do this now" prompt,
+     while staying distinct from the saffron action buttons. */
+  background: linear-gradient(
+    90deg,
+    var(--color-secondary),
+    var(--color-accent)
+  );
+  color: var(--color-secondary-text);
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  clip-path: polygon(
+    var(--slant) 0,
+    100% 0,
+    calc(100% - var(--slant)) 100%,
+    0 100%
+  );
+  transition: filter 0.1s ease, transform 0.05s ease;
+}
+.travel-banner:active {
+  filter: brightness(1.12);
+  transform: translateY(1px);
+}
+.travel-banner__prefix {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 400; /* Titan One ships a single weight. */
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.travel-banner__title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
 /* ---- Dialog ---- */
 .dialog-backdrop {
   position: fixed;

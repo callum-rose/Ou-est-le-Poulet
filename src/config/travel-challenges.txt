@@ -1,0 +1,10 @@
+# Travel challenges — handed out one at a time when the team sets off for the
+# next pub, to be done on the walk. Same format as challenges.txt:
+#   Title | Description
+# Blank lines and lines starting with '#' are ignored. They are handed out in
+# order, top to bottom. Organiser: edit these freely.
+
+Street serenade | Sing a chorus of an England football chant loud enough for a stranger to hear on the way. No stopping to do it — keep walking.
+Local intel | Ask a passer-by for a pub recommendation before you reach the next stop. Photograph your new friend (with permission).
+Bridge toll | Every team member must high-five a different stranger before arriving. Count them out loud.
+Statue impression | Find a statue or monument en route and recreate its pose as a team. Photographic proof required.

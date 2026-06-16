@@ -8,6 +8,7 @@ export const routeForPhase: Record<GamePhase, string> = {
   ready: '/ready',
   hunting: '/hunt',
   arrival: '/arrival',
+  travel: '/travel',
   challenge: '/challenge',
   // The stats screen doubles as the terminal victory screen. It's an exempt
   // overlay, so PhaseGate won't drive navigation to/from it — the found-phase
@@ -32,14 +33,15 @@ export const phaseOrder: Record<GamePhase, number> = {
   ready: 3,
   hunting: 4,
   arrival: 5,
-  challenge: 6,
-  found: 7,
+  travel: 6,
+  challenge: 7,
+  found: 8,
 };
 
 /**
  * Stable screens the browser Back button may return to. The transient loop
- * screens (arrival, challenge) and the terminal victory screen are excluded —
- * you can't wander back into them once the phase has moved on.
+ * screens (arrival, travel, challenge) and the terminal victory screen are
+ * excluded — you can't wander back into them once the phase has moved on.
  */
 export const BACK_NAVIGABLE_PHASES: GamePhase[] = [
   'welcome',

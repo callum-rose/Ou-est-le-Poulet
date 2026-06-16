@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import { appConfig, copy } from '../config/app.config';
-import { challenges, pubs } from '../config/data';
+import { challenges, pubs, travelChallenges } from '../config/data';
 import { useGame } from '../state/GameContext';
-import { isPubCompleted } from '../state/gameReducer';
+import {
+  isPubCompleted,
+  pendingTravelChallengeIndex,
+} from '../state/gameReducer';
 import { useNearestPub } from '../hooks/useNearestPub';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { haversineM } from '../lib/geo';
 import { BigButton } from '../components/ui/BigButton';
+import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { PubMiniMap } from '../components/Map/PubMiniMap';
 import { Screen } from '../components/ui/Screen';
 import { AlreadySearchedScreen } from './AlreadySearchedScreen';
@@ -13,6 +18,7 @@ import { AlreadySearchedScreen } from './AlreadySearchedScreen';
 export function ArrivalScreen() {
   const { state, dispatch } = useGame();
   const { sample } = useGeolocation();
+  const [confirmingTravel, setConfirmingTravel] = useState(false);
 
   const last = state.geo.last;
   const { nearest } = useNearestPub(last, pubs, appConfig.arrivalRadiusM);
@@ -26,6 +32,16 @@ export function ArrivalScreen() {
       ? haversineM(last.lat, last.lng, pending.lat, pending.lng) / 1000
       : null;
 
+  // The travel challenge this leg is gated on: the outstanding one if they've
+  // already set off, else the next one due. Null when nothing is owed (first
+  // leg with the flag off, list exhausted, or already done this leg) — arrival
+  // then confirms directly.
+  const travelIndex = pendingTravelChallengeIndex(state);
+  const travelChallenge =
+    travelIndex !== null && travelIndex < travelChallenges.length
+      ? travelChallenges[travelIndex]
+      : undefined;
+
   const confirm = () => {
     void sample();
     dispatch({
@@ -34,6 +50,15 @@ export function ArrivalScreen() {
       challengeCount: challenges.length,
       loop: appConfig.loopChallenges,
     });
+  };
+
+  // Surface an outstanding/owed travel challenge once before searching here.
+  const arrive = () => {
+    if (travelChallenge) {
+      setConfirmingTravel(true);
+    } else {
+      confirm();
+    }
   };
 
   const openDirections = () => {
@@ -91,10 +116,39 @@ export function ArrivalScreen() {
           <BigButton variant="secondary" onClick={openDirections}>
             {copy.arrival.directionsCta}
           </BigButton>
-          <BigButton variant="success" onClick={confirm}>
+          {travelChallenge && (
+            <BigButton
+              variant="secondary"
+              onClick={() => dispatch({ type: 'OPEN_TRAVEL', at: Date.now() })}
+            >
+              {copy.arrival.headingCta} {pending.name}
+            </BigButton>
+          )}
+          <BigButton variant="success" onClick={arrive}>
             {copy.arrival.arrivedCta}
           </BigButton>
         </>
+      )}
+      {confirmingTravel && travelChallenge && (
+        <ConfirmDialog
+          message={
+            <>
+              {copy.travel.arrivalConfirm}
+              <br />
+              <br />
+              <strong>{travelChallenge.title}</strong>
+              <br />
+              {travelChallenge.description}
+            </>
+          }
+          confirmLabel={copy.travel.arrivalConfirmCta}
+          cancelLabel={copy.travel.arrivalConfirmCancel}
+          onConfirm={() => {
+            setConfirmingTravel(false);
+            confirm();
+          }}
+          onCancel={() => setConfirmingTravel(false)}
+        />
       )}
     </Screen>
   );

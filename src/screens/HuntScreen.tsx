@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { copy } from '../config/app.config';
-import { pubs } from '../config/data';
+import { pubs, travelChallenges } from '../config/data';
 import { useGame } from '../state/GameContext';
-import { isPubCompleted } from '../state/gameReducer';
+import { activeTravelVisit, isPubCompleted } from '../state/gameReducer';
 import { visitedPubIds } from '../state/selectors';
 import { haversineM } from '../lib/geo';
 import { useGeolocation } from '../hooks/useGeolocation';
@@ -51,6 +51,13 @@ export function HuntScreen() {
 
   const allSearched = visited.size >= pubs.length;
 
+  // An outstanding travel challenge to do on the walk — tap to mark it done.
+  const travel = activeTravelVisit(state);
+  const travelChallenge =
+    travel && travel.challengeIndex < travelChallenges.length
+      ? travelChallenges[travel.challengeIndex]
+      : undefined;
+
   return (
     <div className="screen">
       <header className="screen__header">
@@ -58,6 +65,19 @@ export function HuntScreen() {
       </header>
 
       <div className="screen__body">
+        {travelChallenge && (
+          <button
+            type="button"
+            className="travel-banner"
+            onClick={() => dispatch({ type: 'OPEN_TRAVEL', at: Date.now() })}
+          >
+            <span className="travel-banner__prefix">
+              {copy.hunt.travelBannerPrefix}
+            </span>{' '}
+            <span className="travel-banner__title">{travelChallenge.title}</span>
+          </button>
+        )}
+
         <div className="map-wrap">
           <HuntMap
             pubs={pubs}

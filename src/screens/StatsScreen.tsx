@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { copy } from '../config/app.config';
-import { challenges, pubs } from '../config/data';
+import { challenges, pubs, travelChallenges } from '../config/data';
 import { useGame } from '../state/GameContext';
 import {
   approxDistanceM,
@@ -148,11 +148,16 @@ export function StatsScreen() {
           {timeline.length > 0 && (
             <ol className="timeline">
               {timeline.map((stop, i) => {
-                const name = stop.pubId
-                  ? pubs.find((p) => p.id === stop.pubId)?.name ?? stop.pubId
-                  : copy.stats.introStopLabel;
+                const name =
+                  stop.kind === 'pub'
+                    ? pubs.find((p) => p.id === stop.pubId)?.name ?? stop.pubId
+                    : stop.kind === 'travel'
+                      ? copy.stats.travelStopLabel
+                      : copy.stats.introStopLabel;
+                const list =
+                  stop.kind === 'travel' ? travelChallenges : challenges;
                 const challenge =
-                  stop.challengeIndex !== null ? challenges[stop.challengeIndex] : undefined;
+                  stop.challengeIndex !== null ? list[stop.challengeIndex] : undefined;
                 const dwell =
                   stop.arrivedAt !== null && stop.completedAt !== null && stop.pubId
                     ? stop.completedAt - stop.arrivedAt
@@ -160,7 +165,7 @@ export function StatsScreen() {
                 return (
                   <li
                     className="timeline__item"
-                    key={`${stop.pubId ?? 'intro'}-${stop.arrivedAt ?? i}`}
+                    key={`${stop.kind}-${stop.arrivedAt ?? i}`}
                   >
                     <time className="timeline__time">
                       {stop.arrivedAt !== null ? formatClock(stop.arrivedAt) : ''}
