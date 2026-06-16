@@ -54,7 +54,7 @@ export function AppHeader() {
           {copy.appTitle}
         </span>
         {elapsedMs !== null && (
-          <span className="app-header__timer">{formatDuration(elapsedMs)}</span>
+          <span className="app-header__timer" onClick={() => navigate('/stats')}>{formatDuration(elapsedMs)}</span>
         )}
         <div className="app-header__right">
           {showRulesButton && (
