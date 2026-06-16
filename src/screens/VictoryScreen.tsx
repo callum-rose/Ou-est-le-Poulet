@@ -60,16 +60,6 @@ export function VictoryScreen() {
           value={formatDistance(approxDistanceM(state))}
           label="Approx distance"
         />
-        <Stat
-          value={
-            state.breadcrumbs.length > 0
-              ? `±${Math.round(
-                  state.breadcrumbs[state.breadcrumbs.length - 1].acc ?? 0,
-                )}m`
-              : '—'
-          }
-          label="Last GPS accuracy"
-        />
       </div>
 
       {visits.length > 0 && (
