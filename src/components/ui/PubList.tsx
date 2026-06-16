@@ -53,7 +53,7 @@ export function PubList({
               <span className="pub-list__name">
                 {pub.name}
                 {pub.phonetic && (
-                  <span className="pub-list__phonetic">{pub.phonetic}</span>
+                  <span className="pub-list__phonetic"><em>[{pub.phonetic}]</em></span>
                 )}
               </span>
               <span

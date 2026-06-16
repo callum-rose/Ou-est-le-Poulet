@@ -57,7 +57,7 @@ export function CheatSheetScreen() {
           {pubs.map((p) => (
             <li key={p.id}>
               {p.name}
-              {p.phonetic && <span className="phonetic"> — {p.phonetic}</span>}
+              {p.phonetic && <span className="phonetic"> — <em>[{p.phonetic}]</em></span>}
             </li>
           ))}
         </ol>
