@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { copy } from '../config/app.config';
 import { pubs, travelChallenges } from '../config/data';
 import { useGame } from '../state/GameContext';
-import { activeTravelVisit, isPubCompleted } from '../state/gameReducer';
+import { isPubCompleted, pendingTravelChallengeIndex } from '../state/gameReducer';
 import { visitedPubIds } from '../state/selectors';
 import { haversineM } from '../lib/geo';
 import { useGeolocation } from '../hooks/useGeolocation';
@@ -51,11 +51,13 @@ export function HuntScreen() {
 
   const allSearched = visited.size >= pubs.length;
 
-  // An outstanding travel challenge to do on the walk — tap to mark it done.
-  const travel = activeTravelVisit(state);
+  // This leg's travel challenge to do on the walk — shown whether or not the
+  // team tapped "We're heading to ..." (they easily forget). Tap to open it and
+  // mark it done.
+  const travelIndex = pendingTravelChallengeIndex(state);
   const travelChallenge =
-    travel && travel.challengeIndex < travelChallenges.length
-      ? travelChallenges[travel.challengeIndex]
+    travelIndex !== null && travelIndex < travelChallenges.length
+      ? travelChallenges[travelIndex]
       : undefined;
 
   return (

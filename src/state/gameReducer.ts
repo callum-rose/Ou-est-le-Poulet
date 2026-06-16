@@ -208,18 +208,19 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'OPEN_TRAVEL': {
       if (state.phase !== 'arrival' && state.phase !== 'hunting') return state;
-      // Re-opening from the hunt-screen banner only navigates — never creates.
-      // Likewise from arrival when one is already outstanding or none is due.
+      // Hand out this leg's travel challenge if it hasn't been already — whether
+      // the team tapped "We're heading to ..." on arrival or the banner on the
+      // hunt screen (so a forgotten depart tap still records the challenge).
+      // When one is already outstanding, done, or not due, just navigate.
       if (
-        state.phase === 'hunting' ||
         activeTravelVisit(state) ||
         travelIssuedThisLeg(state) ||
         !travelAvailableForLeg(state)
       ) {
         return { ...state, phase: 'travel' };
       }
-      // The depart tap from arrival: hand out the next travel challenge. Keep
-      // pendingPubId so the travel screen can name where they're heading.
+      // Keep pendingPubId (set on arrival) so the travel screen can name where
+      // they're heading; it's null when opened from the hunt screen.
       const travelVisit: TravelVisit = {
         challengeIndex: state.travelCursor,
         targetPubId: state.pendingPubId,
