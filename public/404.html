@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pub Hunt</title>
+    <!--
+      SPA fallback for GitHub Pages. We use hash routing, so deep links never
+      actually hit this file in normal use — it exists as insurance in case a
+      non-hash path is requested. Redirect to the app root, preserving any path
+      as a hash so the router can pick it up.
+    -->
+    <script>
+      (function () {
+        var base = '/Jack-Stag-Website/';
+        var path = window.location.pathname;
+        var rest = path.indexOf(base) === 0 ? path.slice(base.length) : '';
+        var hash = window.location.hash || '';
+        var target = base + (rest && !hash ? '#/' + rest : hash || '');
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
