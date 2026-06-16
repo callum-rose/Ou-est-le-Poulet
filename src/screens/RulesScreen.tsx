@@ -5,7 +5,7 @@ import { BigButton } from '../components/ui/BigButton';
 import { Screen } from '../components/ui/Screen';
 
 export function RulesScreen() {
-  const { state, dispatch } = useGame();
+  const { dispatch } = useGame();
   const navigate = useNavigate();
   const location = useLocation();
   const fromNav = location.state?.fromNav as string | undefined;
