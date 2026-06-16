@@ -47,7 +47,10 @@ export function CheatSheetScreen() {
         <h2>{copy.cheatsheet.pubsHeading}</h2>
         <ol className="cheat-list">
           {pubs.map((p) => (
-            <li key={p.id}>{p.name}</li>
+            <li key={p.id}>
+              {p.name}
+              {p.phonetic && <span className="phonetic"> — {p.phonetic}</span>}
+            </li>
           ))}
         </ol>
       </section>

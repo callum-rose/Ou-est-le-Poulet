@@ -15,6 +15,8 @@ export interface Pub {
   name: string;
   lat: number;
   lng: number;
+  /** Reader-friendly pronunciation guide, if the name needs one. */
+  phonetic?: string;
 }
 
 export interface Challenge {

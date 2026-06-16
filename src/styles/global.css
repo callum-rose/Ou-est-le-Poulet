@@ -302,11 +302,27 @@ button {
     var(--color-surface) 60%
   );
 }
+.pub-list__name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.pub-list__phonetic {
+  font-size: 13px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
 .pub-list__badge {
   font-size: 14px;
   font-weight: 800;
   color: var(--color-text-muted);
   white-space: nowrap;
+}
+.phonetic {
+  font-style: italic;
+  color: var(--color-text-muted);
 }
 .pub-list__badge--suggested {
   color: var(--color-primary);

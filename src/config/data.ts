@@ -7,7 +7,12 @@ function parsePubs(txt: string): Pub[] {
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
-    .map((url, i) => {
+    .map((line, i) => {
+      // Optional reader-friendly pronunciation after a ' | ' separator.
+      const sep = line.indexOf(' | ');
+      const url = sep === -1 ? line : line.slice(0, sep);
+      const phonetic = sep === -1 ? undefined : line.slice(sep + 3).trim() || undefined;
+
       const match = url.match(/\/maps\/place\/([^/@]+)\/@([-\d.]+),([-\d.]+)/);
       if (!match) throw new Error(`Invalid pub URL on line ${i + 1}: ${url}`);
       const [, nameEncoded, lat, lng] = match;
@@ -16,6 +21,7 @@ function parsePubs(txt: string): Pub[] {
         name: decodeURIComponent(nameEncoded.replace(/\+/g, ' ')),
         lat: Number(lat),
         lng: Number(lng),
+        phonetic,
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));

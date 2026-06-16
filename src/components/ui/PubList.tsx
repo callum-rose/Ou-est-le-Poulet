@@ -50,7 +50,12 @@ export function PubList({
               onClick={() => onSelect(pub.id)}
               disabled={disabled}
             >
-              <span>{pub.name}</span>
+              <span className="pub-list__name">
+                {pub.name}
+                {pub.phonetic && (
+                  <span className="pub-list__phonetic">{pub.phonetic}</span>
+                )}
+              </span>
               <span
                 className={`pub-list__badge ${
                   suggested ? 'pub-list__badge--suggested' : ''
