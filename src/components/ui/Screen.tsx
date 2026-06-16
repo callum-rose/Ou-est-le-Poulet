@@ -5,15 +5,16 @@ interface ScreenProps {
   subtitle?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
+  onTitleClick?: () => void;
 }
 
 /** Standard mobile-first screen scaffold: header, scrollable body, footer. */
-export function Screen({ title, subtitle, children, footer }: ScreenProps) {
+export function Screen({ title, subtitle, children, footer, onTitleClick }: ScreenProps) {
   return (
     <div className="screen">
       {(title || subtitle) && (
         <header className="screen__header">
-          {title && <h1>{title}</h1>}
+          {title && <h1 onClick={onTitleClick}>{title}</h1>}
           {subtitle && <p className="muted">{subtitle}</p>}
         </header>
       )}
