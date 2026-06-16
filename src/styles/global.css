@@ -427,7 +427,9 @@ button {
   background: var(--color-surface-raised);
   /* Extra horizontal padding keeps content clear of the slanted edges. */
   padding: var(--space-4) calc(var(--space-4) + var(--slant-lg));
-  margin-bottom: var(--space-4);
+  /* Match the inter-stat grid gap so the banner and stat boxes are evenly
+     spaced as one set. */
+  margin-bottom: var(--space-3);
   /* Angular: slanted rectangle (parallelogram), matching stats and buttons. */
   clip-path: polygon(
     var(--slant-lg) 0,
@@ -531,18 +533,25 @@ button {
 }
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: var(--space-3);
 }
 .stat {
   background: var(--color-surface-raised);
   border-radius: var(--radius-md);
-  padding: var(--space-4) calc(var(--space-4) + var(--slant));
+  /* Match the progress banner: same padding and slant so the stat boxes and
+     the "challenges done" box read as one unified set. */
+  padding: var(--space-4) calc(var(--space-4) + var(--slant-lg));
+  /* Value and label sit on one line, label trailing at the right edge. */
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
   /* Slanted rectangle (parallelogram) — sides lean the same way. */
   clip-path: polygon(
-    var(--slant) 0,
+    var(--slant-lg) 0,
     100% 0,
-    calc(100% - var(--slant)) 100%,
+    calc(100% - var(--slant-lg)) 100%,
     0 100%
   );
 }
@@ -559,6 +568,7 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-text-muted);
+  text-align: right;
 }
 
 /* ---- Map ---- */
