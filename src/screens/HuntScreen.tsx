@@ -55,7 +55,6 @@ export function HuntScreen() {
     <div className="screen">
       <header className="screen__header">
         <h1>{copy.hunt.heading}</h1>
-        <p className="muted">{copy.hunt.body}</p>
       </header>
 
       <div className="screen__body">

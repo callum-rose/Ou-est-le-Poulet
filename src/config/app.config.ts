@@ -61,7 +61,6 @@ export const copy = {
   },
   hunt: {
     heading: 'Where to next?',
-    body: 'Pick a pub to search. The stag is hiding in one of them.',
     pickPrompt: 'Choose a pub to search',
     foundCta: 'We found him! 🎉',
     statsLink: 'Progress',
