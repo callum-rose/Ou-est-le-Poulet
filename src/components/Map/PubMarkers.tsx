@@ -37,8 +37,17 @@ export function PubMarkers({ pubs, visitedIds, onSelect }: PubMarkersProps) {
               onSelect ? { click: () => onSelect(pub.id) } : undefined
             }
           >
-            <Tooltip permanent direction="right" offset={[10, -8]}>
-              {pub.name}
+            <Tooltip
+              permanent
+              direction="right"
+              offset={[10, -8]}
+              className={onSelect ? 'pub-tooltip--clickable' : undefined}
+            >
+              {onSelect ? (
+                <span onClick={() => onSelect(pub.id)}>{pub.name}</span>
+              ) : (
+                pub.name
+              )}
             </Tooltip>
           </Marker>
         );

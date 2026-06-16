@@ -231,6 +231,10 @@ button {
 .pub-pin--visited {
   background: var(--color-pub-visited);
 }
+.pub-tooltip--clickable {
+  pointer-events: auto;
+  cursor: pointer;
+}
 .live-pin {
   width: 18px;
   height: 18px;
