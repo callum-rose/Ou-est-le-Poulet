@@ -37,7 +37,10 @@ h1,
 h2,
 h3 {
   margin: 0 0 var(--space-3);
-  line-height: 1.2;
+  line-height: 1.15;
+  font-family: var(--font-display);
+  font-weight: 400; /* Titan One ships a single weight. */
+  letter-spacing: 0.01em;
 }
 
 p {
@@ -108,8 +111,9 @@ button {
   gap: var(--space-3);
 }
 .app-header__title {
-  font-weight: 900;
-  font-size: 18px;
+  font-family: var(--font-display);
+  font-weight: 400; /* Titan One ships a single weight. */
+  font-size: 20px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -196,9 +200,10 @@ button {
     calc(100% - var(--slant)) 100%,
     0 100%
   );
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400; /* Titan One ships a single weight. */
+  letter-spacing: 0.02em;
   cursor: pointer;
   background: var(--color-primary);
   color: var(--color-primary-text);
@@ -228,7 +233,9 @@ button {
 .big-button--ghost {
   background: transparent;
   color: var(--color-text-muted);
+  font-family: var(--font-base);
   font-weight: 700;
+  letter-spacing: normal;
   min-height: var(--tap-min);
   clip-path: none;
 }
@@ -324,8 +331,9 @@ button {
   );
 }
 .stat__value {
+  font-family: var(--font-display);
   font-size: 30px;
-  font-weight: 900;
+  font-weight: 400; /* Titan One ships a single weight. */
   color: var(--color-primary);
   line-height: 1.1;
 }
