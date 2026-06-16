@@ -32,7 +32,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'SET_TEAM_NAME': {
       const name = action.name.trim();
       if (!name) return state;
-      return { ...state, team: { name }, phase: 'ready' };
+      // Naming the team during setup advances to ready. If the team navigates
+      // back to rename later, keep the current phase rather than regressing.
+      return {
+        ...state,
+        team: { name },
+        phase: state.phase === 'setup' ? 'ready' : state.phase,
+      };
     }
 
     case 'START_GAME': {
