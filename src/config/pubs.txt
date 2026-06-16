@@ -1,8 +1,6 @@
-https://www.google.com/maps/place/U+Fleku/@50.0792,14.4189,17z
-https://www.google.com/maps/place/Lok%C3%A1l+Dlouh%C3%A1%C3%A1%C3%A1/@50.0905,14.4255,17z
-https://www.google.com/maps/place/U+Zlat%C3%A9ho+Tygra/@50.0863,14.4185,17z
-https://www.google.com/maps/place/Pivovarsk%C3%BD+D%C5%AFm/@50.0758,14.4248,17z
-https://www.google.com/maps/place/U+Medv%C3%ADdk%C5%AF/@50.0826,14.4192,17z
-https://www.google.com/maps/place/Vinohradsk%C3%BD+Pivovar/@50.0746,14.4471,17z
-https://www.google.com/maps/place/Zl%C3%BD+%C4%8Casy/@50.0668,14.4316,17z
-https://www.google.com/maps/place/BeerGeek+Bar/@50.0883,14.4612,17z
+https://maps.app.goo.gl/XiWq8FPzKNjZvNv86
+https://maps.app.goo.gl/mTSa3h2BZ1ZRXYxM8
+https://maps.app.goo.gl/4ZwU86m4AHr26gyd9
+https://maps.app.goo.gl/r8yyjmBzchj53rqo8
+https://maps.app.goo.gl/bmsh23StSCQvTUYD7
+https://maps.app.goo.gl/aS1th5NuQAk5VQhU7
