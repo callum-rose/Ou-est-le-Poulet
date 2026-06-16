@@ -1,3 +1,4 @@
+import { copy } from '../../config/app.config';
 import { formatDistance } from '../../lib/geo';
 import type { Pub } from '../../types';
 
@@ -62,9 +63,9 @@ export function PubList({
                 }`}
               >
                 {visited
-                  ? '✓ searched'
+                  ? copy.pubList.searchedBadge
                   : suggested
-                    ? 'nearest'
+                    ? copy.pubList.nearestBadge
                     : dist != null
                       ? formatDistance(dist)
                       : ''}

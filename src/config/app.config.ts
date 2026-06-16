@@ -42,6 +42,7 @@ export const copy = {
     heading: "Welcome to Jack's pub crawl",
     body: "The stag is hiding in one of Prague's finest pubs. Round up your team, sink a few, and track him down.",
     cta: "Let's go",
+    photoAlt: 'Jack',
   },
   setup: {
     heading: 'Name your team',
@@ -51,6 +52,7 @@ export const copy = {
   rulesScreen: {
     heading: 'The rules',
     cta: 'Got it — continue',
+    backCta: '← Back',
   },
   ready: {
     heading: 'Ready to hunt?',
@@ -76,6 +78,10 @@ export const copy = {
     confirmCta: 'Yes, search here',
     pickOther: 'Or choose a different pub',
     cancel: 'Not here yet',
+    backToAllPubs: 'Back to all pubs',
+    distanceSuffix: 'km away',
+    directionsCta: 'Get Directions',
+    arrivedCta: "We've Arrived",
   },
   challenge: {
     heading: 'Your challenge',
@@ -125,6 +131,18 @@ export const copy = {
     qrBody: 'Scan to open the hunt app.',
     backLink: 'Back to app',
   },
+  appHeader: {
+    rulesAriaLabel: 'Rules',
+  },
+  pubList: {
+    searchedBadge: '✓ searched',
+    nearestBadge: 'nearest',
+  },
+  pubMiniMap: {
+    openAriaPrefix: 'Open',
+    openAriaSuffix: 'in Google Maps',
+  },
+
   statLabels: {
     totalTime: 'Total time',
     pubsSearched: 'Pubs searched',

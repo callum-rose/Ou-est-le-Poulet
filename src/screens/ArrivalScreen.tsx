@@ -76,7 +76,7 @@ export function ArrivalScreen() {
           variant="primary"
           onClick={() => dispatch({ type: 'CANCEL_ARRIVAL' })}
         >
-          Back to all pubs
+          {copy.arrival.backToAllPubs}
         </BigButton>
       }
     >
@@ -84,15 +84,15 @@ export function ArrivalScreen() {
         <>
           {distanceKm !== null && (
             <p className="muted text-center pub-distance">
-              {distanceKm.toFixed(1)} km away
+              {distanceKm.toFixed(1)} {copy.arrival.distanceSuffix}
             </p>
           )}
           <PubMiniMap pub={pending} onClick={openDirections} />
           <BigButton variant="secondary" onClick={openDirections}>
-            Get Directions
+            {copy.arrival.directionsCta}
           </BigButton>
           <BigButton variant="success" onClick={confirm}>
-            We've Arrived
+            {copy.arrival.arrivedCta}
           </BigButton>
         </>
       )}

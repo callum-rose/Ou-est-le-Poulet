@@ -16,7 +16,7 @@ export function RulesScreen() {
       footer={
         fromNav ? (
           <BigButton onClick={() => navigate(fromNav)}>
-            ← Back
+            {copy.rulesScreen.backCta}
           </BigButton>
         ) : (
           <BigButton onClick={() => dispatch({ type: 'ACCEPT_RULES' })}>

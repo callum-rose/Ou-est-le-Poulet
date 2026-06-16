@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { divIcon } from 'leaflet';
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
-import { appConfig } from '../../config/app.config';
+import { appConfig, copy } from '../../config/app.config';
 import type { Pub } from '../../types';
 
 // Reuse the hunt-map pin styling; static so no image-asset bug to worry about.
@@ -43,7 +43,7 @@ export function PubMiniMap({ pub, onClick }: PubMiniMapProps) {
       type="button"
       className="pub-minimap"
       onClick={onClick}
-      aria-label={`Open ${pub.name} in Google Maps`}
+      aria-label={`${copy.pubMiniMap.openAriaPrefix} ${pub.name} ${copy.pubMiniMap.openAriaSuffix}`}
     >
       <MapContainer
         className="pub-minimap__map"
