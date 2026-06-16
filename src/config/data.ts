@@ -1,6 +1,7 @@
 import type { Challenge, Pub } from '../types';
 import pubsTxt from './pubs.txt?raw';
 import challengesTxt from './challenges.txt?raw';
+import travelChallengesTxt from './travel-challenges.txt?raw';
 
 // Blank lines and `#` comments are ignored so the .txt files can carry usage
 // notes. A malformed line is skipped with a warning rather than thrown: these
@@ -63,3 +64,4 @@ function parseChallenges(txt: string): Challenge[] {
 
 export const pubs: Pub[] = parsePubs(pubsTxt);
 export const challenges: Challenge[] = parseChallenges(challengesTxt);
+export const travelChallenges: Challenge[] = parseChallenges(travelChallengesTxt);

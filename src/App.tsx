@@ -21,6 +21,7 @@ import { RulesScreen } from './screens/RulesScreen';
 import { ReadyScreen } from './screens/ReadyScreen';
 import { HuntScreen } from './screens/HuntScreen';
 import { ArrivalScreen } from './screens/ArrivalScreen';
+import { TravelChallengeScreen } from './screens/TravelChallengeScreen';
 import { ChallengeScreen } from './screens/ChallengeScreen';
 import { StatsScreen } from './screens/StatsScreen';
 import { CheatSheetScreen } from './screens/CheatSheetScreen';
@@ -89,6 +90,13 @@ function PhaseGate() {
       return;
     }
 
+    // Hardware Back off the travel screen = return to the hunt, leaving the
+    // travel challenge outstanding (mirrors the arrival cancel).
+    if (phase === 'travel' && pathname === routeForPhase.hunting) {
+      dispatch({ type: 'LEAVE_TRAVEL' });
+      return;
+    }
+
     // Allow stepping back to a stable earlier screen; otherwise snap forward
     // to the canonical route (rejects deep links ahead of the phase and
     // re-entry into transient screens).
@@ -116,6 +124,7 @@ function AppRoutes() {
           <Route path="/ready" element={<ReadyScreen />} />
           <Route path="/hunt" element={<HuntScreen />} />
           <Route path="/arrival" element={<ArrivalScreen />} />
+          <Route path="/travel" element={<TravelChallengeScreen />} />
           <Route path="/challenge" element={<ChallengeScreen />} />
           <Route path="/stats" element={<StatsScreen />} />
           <Route path="/cheatsheet" element={<CheatSheetScreen />} />

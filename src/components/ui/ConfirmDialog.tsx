@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { BigButton } from './BigButton';
 
 interface ConfirmDialogProps {
-  message: string;
+  message: ReactNode;
   confirmLabel: string;
   cancelLabel: string;
   confirmVariant?: 'primary' | 'danger';

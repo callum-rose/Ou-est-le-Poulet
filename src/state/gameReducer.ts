@@ -1,5 +1,6 @@
 import { appConfig } from '../config/app.config';
-import type { GameAction, GameState, Visit } from '../types';
+import { travelChallenges } from '../config/data';
+import type { GameAction, GameState, TravelVisit, Visit } from '../types';
 
 export const initialState: GameState = {
   schemaVersion: appConfig.schemaVersion,
@@ -9,11 +10,68 @@ export const initialState: GameState = {
   finishedAt: null,
   visits: [],
   challengeCursor: 0,
+  travelVisits: [],
+  travelCursor: 0,
   introChallengeIndex: null,
   pendingPubId: null,
   breadcrumbs: [],
   geo: { status: 'unknown', last: null },
 };
+
+/** The single outstanding travel challenge, if one is in flight. */
+export function activeTravelVisit(state: GameState): TravelVisit | undefined {
+  return state.travelVisits.find((t) => t.completedAt === null);
+}
+
+/**
+ * Whether the travel list could still hand out a challenge for this leg. False
+ * on the opening leg when the flag is off (no pub visits yet ⇒ first leg) and
+ * once the travel list is exhausted. This does *not* account for a challenge
+ * already issued this leg — see {@link travelIssuedThisLeg}.
+ */
+export function travelAvailableForLeg(state: GameState): boolean {
+  if (state.visits.length === 0 && !appConfig.travelChallengeOnFirstLeg) {
+    return false;
+  }
+  return state.travelCursor < travelChallenges.length;
+}
+
+/**
+ * Start of the current leg: the most recent completed pub arrival (legs are the
+ * stretches between pub searches). 0 before any pub is searched.
+ */
+function currentLegStart(state: GameState): number {
+  let start = 0;
+  for (const v of state.visits) {
+    if (v.completedAt !== null && v.completedAt > start) start = v.completedAt;
+  }
+  return start;
+}
+
+/**
+ * Whether this leg has already been handed its one travel challenge — i.e. a
+ * travel record (outstanding or done) was created since the last pub search.
+ * Prevents re-issuing once the leg's challenge is completed but the team
+ * lingers on the hunt screen / re-picks a pub.
+ */
+export function travelIssuedThisLeg(state: GameState): boolean {
+  const start = currentLegStart(state);
+  return state.travelVisits.some((t) => t.departedAt >= start);
+}
+
+/**
+ * The travel challenge index this leg should surface, or null when none is
+ * owed: the outstanding one if set off, else the next due one when the leg is
+ * eligible and hasn't already been issued (and completed) one.
+ */
+export function pendingTravelChallengeIndex(state: GameState): number | null {
+  const active = activeTravelVisit(state);
+  if (active) return active.challengeIndex;
+  if (!travelIssuedThisLeg(state) && travelAvailableForLeg(state)) {
+    return state.travelCursor;
+  }
+  return null;
+}
 
 /** Most recent visit for a pub, if any. */
 function lastVisitOf(state: GameState, pubId: string): Visit | undefined {
@@ -101,6 +159,29 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         return { ...state, phase: 'hunting', pendingPubId: null };
       }
 
+      // Settle this leg's travel challenge before recording the pub. If one is
+      // outstanding (they tapped "heading there" but never marked it done),
+      // stamp it complete now. Otherwise, if the leg required one but they
+      // skipped "heading there" entirely, record an already-complete one so the
+      // leg's travel challenge is never silently dropped.
+      const activeTravel = activeTravelVisit(state);
+      let travelVisits = state.travelVisits;
+      let travelCursor = state.travelCursor;
+      if (activeTravel) {
+        travelVisits = state.travelVisits.map((t) =>
+          t === activeTravel ? { ...t, completedAt: action.at } : t,
+        );
+      } else if (!travelIssuedThisLeg(state) && travelAvailableForLeg(state)) {
+        const travelVisit: TravelVisit = {
+          challengeIndex: state.travelCursor,
+          targetPubId: pubId,
+          departedAt: action.at,
+          completedAt: action.at,
+        };
+        travelVisits = [...state.travelVisits, travelVisit];
+        travelCursor = state.travelCursor + 1;
+      }
+
       // Not looping: the cursor passes straight through. Once it runs past the
       // list the index is out of range, so the pub is still searchable but
       // hands out no challenge.
@@ -120,7 +201,56 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         phase: 'challenge',
         visits: [...state.visits, visit],
         challengeCursor: state.challengeCursor + 1,
+        travelVisits,
+        travelCursor,
       };
+    }
+
+    case 'OPEN_TRAVEL': {
+      if (state.phase !== 'arrival' && state.phase !== 'hunting') return state;
+      // Re-opening from the hunt-screen banner only navigates — never creates.
+      // Likewise from arrival when one is already outstanding or none is due.
+      if (
+        state.phase === 'hunting' ||
+        activeTravelVisit(state) ||
+        travelIssuedThisLeg(state) ||
+        !travelAvailableForLeg(state)
+      ) {
+        return { ...state, phase: 'travel' };
+      }
+      // The depart tap from arrival: hand out the next travel challenge. Keep
+      // pendingPubId so the travel screen can name where they're heading.
+      const travelVisit: TravelVisit = {
+        challengeIndex: state.travelCursor,
+        targetPubId: state.pendingPubId,
+        departedAt: action.at,
+        completedAt: null,
+      };
+      return {
+        ...state,
+        phase: 'travel',
+        travelVisits: [...state.travelVisits, travelVisit],
+        travelCursor: state.travelCursor + 1,
+      };
+    }
+
+    case 'COMPLETE_TRAVEL': {
+      if (state.phase !== 'travel') return state;
+      const travelVisits = [...state.travelVisits];
+      for (let i = travelVisits.length - 1; i >= 0; i--) {
+        if (travelVisits[i].completedAt === null) {
+          travelVisits[i] = { ...travelVisits[i], completedAt: action.at };
+          break;
+        }
+      }
+      return { ...state, phase: 'hunting', pendingPubId: null, travelVisits };
+    }
+
+    case 'LEAVE_TRAVEL': {
+      if (state.phase !== 'travel') return state;
+      // Leave the challenge outstanding — they'll finish it on the walk and
+      // mark it done from the banner (or be prompted again on arrival).
+      return { ...state, phase: 'hunting', pendingPubId: null };
     }
 
     case 'COMPLETE_PUB': {

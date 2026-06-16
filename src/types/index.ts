@@ -7,6 +7,7 @@ export type GamePhase =
   | 'ready'
   | 'hunting'
   | 'arrival'
+  | 'travel'
   | 'challenge'
   | 'found';
 
@@ -33,6 +34,14 @@ export interface Visit {
   completedAt: number | null; // epoch ms once the challenge is done
 }
 
+/** A single travel-challenge leg, handed out when departing for the next pub. */
+export interface TravelVisit {
+  challengeIndex: number; // index into travelChallenges
+  targetPubId: string | null; // pub they set off for (informational)
+  departedAt: number; // epoch ms when handed out
+  completedAt: number | null; // epoch ms once confirmed done
+}
+
 /** A GPS sample. */
 export interface Breadcrumb {
   lat: number;
@@ -51,6 +60,8 @@ export interface GameState {
   finishedAt: number | null; // set on FOUND_STAG
   visits: Visit[]; // ordered by arrival
   challengeCursor: number; // next challenge index to hand out
+  travelVisits: TravelVisit[]; // ordered by departure
+  travelCursor: number; // next travel-challenge index to hand out
   /** Challenge shown before the hunt begins (no pub). Null once completed. */
   introChallengeIndex: number | null;
   pendingPubId: string | null; // pub awaiting arrival confirmation
@@ -69,6 +80,9 @@ export type GameAction =
   | { type: 'ARRIVE_AT_PUB'; pubId: string; at: number }
   | { type: 'CONFIRM_PUB'; at: number; challengeCount: number; loop: boolean }
   | { type: 'CANCEL_ARRIVAL' }
+  | { type: 'OPEN_TRAVEL'; at: number }
+  | { type: 'COMPLETE_TRAVEL'; at: number }
+  | { type: 'LEAVE_TRAVEL' }
   | { type: 'COMPLETE_PUB'; at: number }
   | { type: 'FOUND_STAG'; at: number }
   | { type: 'RESUME_HUNT' }

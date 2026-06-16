@@ -5,10 +5,13 @@
 export const appConfig = {
     /** Persisted localStorage key. Bump the suffix only via schemaVersion. */
     storageKey: 'stag-hunt:v1',
-    schemaVersion: 1,
+    schemaVersion: 2,
 
     /** Loop back to challenge #1 when the list is exhausted. */
     loopChallenges: false,
+
+    /** Hand out a travel challenge on the opening leg (start → first pub). */
+    travelChallengeOnFirstLeg: false,
 
     /** Light foreground GPS polling cadence. */
     pollIntervalMs: 60_000,
@@ -68,6 +71,8 @@ export const copy = {
         foundConfirm: 'Found Jack? This ends the game and stamps your finish time.',
         foundConfirmCta: 'Yes, we found him!',
         foundConfirmCancel: 'Not yet',
+        // Rendered as "On the way: <travel challenge title>".
+        travelBannerPrefix: 'On the way:',
     },
     arrival: {
         heading: 'Arrived?',
@@ -80,6 +85,18 @@ export const copy = {
         distanceSuffix: 'km away',
         directionsCta: 'Get Directions',
         arrivedCta: "We've Arrived",
+        // Rendered as "We're heading to <pub name>".
+        headingCta: "We're heading to",
+    },
+    travel: {
+        heading: 'Travel challenge',
+        subtitlePrefix: 'Heading to',
+        doneCta: "We've done it",
+        leaveCta: 'Back to the hunt',
+        noneLeft: 'No travel challenge this leg — just get to the next pub.',
+        arrivalConfirm: 'Have you finished your travel challenge?',
+        arrivalConfirmCta: 'Yes, all done',
+        arrivalConfirmCancel: 'Not yet',
     },
     challenge: {
         heading: 'Your challenge',
@@ -114,6 +131,7 @@ export const copy = {
         finishedMessage: 'Hunt complete — you tracked Jack down. 🍻',
         introStopLabel: 'Before you set off',
         noChallengeLabel: 'No challenge this round',
+        travelStopLabel: 'On the way',
     },
     geo: {
         denied: "Location is off, so the map can't show where you are. You can still pick pubs by hand.",
@@ -125,6 +143,7 @@ export const copy = {
         warning: 'Do not show this to players — it lists the pubs and challenges.',
         pubsHeading: 'Pubs',
         challengesHeading: 'Challenges',
+        travelChallengesHeading: 'Travel challenges',
         rulesHeading: 'Rules',
         qrHeading: 'Player onboarding',
         qrBody: 'Scan to open the hunt app.',
