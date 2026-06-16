@@ -7,6 +7,11 @@ import { phaseOrder } from '../../state/routes';
 import { challengeProgress, totalTimeMs } from '../../state/selectors';
 import { formatDuration } from '../../lib/time';
 
+/** Tapping the team name this many times in quick succession opens the
+ *  organiser cheat-sheet. */
+const ORGANISER_TAPS = 3;
+const TAP_RESET_MS = 2000;
+
 export function AppHeader() {
   const { state } = useGame();
   const navigate = useNavigate();
@@ -20,6 +25,29 @@ export function AppHeader() {
     return () => clearInterval(id);
   }, [state.startedAt, state.finishedAt]);
 
+  // The cheat-sheet is the organiser overlay; while it's open the header icons
+  // stay put but become inert so a press can't navigate the organiser away.
+  const onCheatSheet = pathname === '/cheatsheet';
+
+  const tapCount = useRef(0);
+  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (tapTimer.current) clearTimeout(tapTimer.current);
+  }, []);
+
+  const handleTeamTap = () => {
+    if (tapTimer.current) clearTimeout(tapTimer.current);
+    tapCount.current += 1;
+    if (tapCount.current >= ORGANISER_TAPS) {
+      tapCount.current = 0;
+      if (!onCheatSheet) navigate('/cheatsheet');
+      return;
+    }
+    tapTimer.current = setTimeout(() => {
+      tapCount.current = 0;
+    }, TAP_RESET_MS);
+  };
+
   const elapsedMs = state.startedAt !== null ? totalTimeMs(state, now) : null;
 
   const showRulesButton =
@@ -32,14 +60,44 @@ export function AppHeader() {
   return (
     <header className="app-header">
       <div className="app-header__inner">
-        {elapsedMs !== null && (
-          <span className="app-header__timer" onClick={() => navigate('/stats')}>{formatDuration(elapsedMs)}</span>
+        {teamName ? (
+          <TeamName name={teamName} onTap={handleTeamTap} />
+        ) : (
+          <span className="app-header__spacer" />
         )}
         <div className="app-header__right">
+          {elapsedMs !== null && (
+            <span
+              className="app-header__timer"
+              onClick={() => {
+                if (!onCheatSheet) navigate('/stats');
+              }}
+            >
+              {formatDuration(elapsedMs)}
+            </span>
+          )}
+          {showRulesButton && (
+            <button
+              className="app-header__rules-btn"
+              onClick={() => {
+                if (!onCheatSheet)
+                  navigate('/rules', { state: { fromNav: pathname } });
+              }}
+              aria-label={copy.appHeader.rulesAriaLabel}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </button>
+          )}
           {showProgressButton && (
             <button
               className="app-header__progress-btn"
-              onClick={() => navigate('/stats')}
+              onClick={() => {
+                if (!onCheatSheet) navigate('/stats');
+              }}
               aria-label={copy.appHeader.progressAriaLabel}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -51,20 +109,6 @@ export function AppHeader() {
               </span>
             </button>
           )}
-          {showRulesButton && (
-            <button
-              className="app-header__rules-btn"
-              onClick={() => navigate('/rules', { state: { fromNav: pathname } })}
-              aria-label={copy.appHeader.rulesAriaLabel}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-              </svg>
-            </button>
-          )}
-          {teamName && <TeamName name={teamName} />}
         </div>
       </div>
     </header>
@@ -76,7 +120,7 @@ export function AppHeader() {
  * enough to need a third line we collapse it back onto a single line and scroll
  * it horizontally so the whole name stays readable.
  */
-function TeamName({ name }: { name: string }) {
+function TeamName({ name, onTap }: { name: string; onTap: () => void }) {
   const boxRef = useRef<HTMLSpanElement>(null);
   const trackRef = useRef<HTMLSpanElement>(null);
   const [marquee, setMarquee] = useState(false);
@@ -130,6 +174,7 @@ function TeamName({ name }: { name: string }) {
     <span
       ref={boxRef}
       className={`app-header__team${marquee ? ' app-header__team--marquee' : ''}`}
+      onClick={onTap}
     >
       <span ref={trackRef} className="app-header__team-track" style={trackStyle}>
         {name}

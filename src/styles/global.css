@@ -136,11 +136,14 @@ button {
   width: 5em;
   text-align: center;
 }
+.app-header__spacer {
+  flex: 1;
+}
 .app-header__right {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  min-width: 0;
+  flex: none;
 }
 .app-header__rules-btn {
   background: none;
@@ -181,6 +184,7 @@ button {
   color: var(--color-primary);
 }
 .app-header__team {
+  flex: 1;
   min-width: 0;
   overflow: hidden;
   font-family: var(--font-display);
@@ -191,7 +195,10 @@ button {
   text-transform: uppercase;
   color: var(--color-text-muted);
   word-break: break-word;
-  text-align: right;
+  text-align: left;
+  /* Triple-tapped to reach the organiser cheat-sheet; don't select the text. */
+  user-select: none;
+  -webkit-user-select: none;
 }
 .app-header__team-track {
   display: block;
