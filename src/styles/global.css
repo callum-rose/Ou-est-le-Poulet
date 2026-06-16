@@ -288,7 +288,7 @@ button {
 .text-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(240, 200, 57, 0.25);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
 }
 
 /* ---- Pub list ---- */
@@ -358,7 +358,7 @@ button {
   color: var(--color-text-muted);
 }
 .pub-list__item--suggested .pub-list__phonetic {
-  color: rgba(8, 7, 5, 0.7);
+  color: var(--color-primary-text-muted);
 }
 .pub-list__badge {
   flex-shrink: 0;
@@ -597,7 +597,7 @@ button {
   border-radius: 50%;
   background: var(--color-live);
   border: 3px solid #fff;
-  box-shadow: 0 0 0 4px rgba(145, 47, 64, 0.4);
+  box-shadow: 0 0 0 4px var(--color-live-glow);
 }
 
 /* ---- Banner / notices ---- */
@@ -611,15 +611,15 @@ button {
 }
 .notice--warn {
   border-left-color: var(--color-accent);
-  background: rgba(145, 47, 64, 0.18);
-  color: #f4b9c1;
+  background: var(--color-warn-bg);
+  color: var(--color-warn-text);
 }
 
 /* ---- Dialog ---- */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--color-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
