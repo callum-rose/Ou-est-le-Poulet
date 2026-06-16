@@ -39,14 +39,23 @@ export function ArrivalScreen() {
   const openDirections = () => {
     if (!pending) return;
     const { lat, lng } = pending;
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isAndroid = /Android/.test(navigator.userAgent);
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isMobile = isIOS || /Android/.test(ua);
+    // Universal HTTPS links: iOS hands maps.apple.com off to Apple Maps,
+    // Android hands the Google Maps URL off to the Google Maps app, and
+    // desktop opens the web map.
     const url = isIOS
-      ? `maps://?daddr=${lat},${lng}&dirflg=w`
-      : isAndroid
-        ? `geo:${lat},${lng}?q=${lat},${lng}`
-        : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
-    window.open(url, '_blank');
+      ? `https://maps.apple.com/?daddr=${lat},${lng}&dirflg=w`
+      : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+    // On mobile, navigate the same window so the OS can hand off to the
+    // native app — opening a new tab can leave a dead blank tab behind.
+    // On desktop, open the web map in a new tab to keep the game open.
+    if (isMobile) {
+      window.location.href = url;
+    } else {
+      window.open(url, '_blank');
+    }
   };
 
   if (pending && isPubCompleted(state, pending.id)) {
