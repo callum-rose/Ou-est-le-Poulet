@@ -106,7 +106,7 @@ button {
   margin: 0 auto;
   padding: var(--space-5) var(--space-4);
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
 }
@@ -178,9 +178,8 @@ button {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  text-align: right;
 }
 
 /* ---- Screen layout ---- */
