@@ -44,7 +44,7 @@ export function CheatSheetScreen() {
             boxSizing: 'border-box',
           }}
         >
-          <QRCodeSVG value={url} size="100%" />
+          <QRCodeSVG value={url} size={512} style={{ width: '100%', height: 'auto' }} />
         </div>
         <p className="muted" style={{ fontSize: 13, wordBreak: 'break-all' }}>
           {url}
