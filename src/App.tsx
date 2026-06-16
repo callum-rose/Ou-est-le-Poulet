@@ -15,7 +15,9 @@ import {
   routeForPhase,
 } from './state/routes';
 import { AppHeader } from './components/ui/AppHeader';
+import { WelcomeScreen } from './screens/WelcomeScreen';
 import { SetupScreen } from './screens/SetupScreen';
+import { RulesScreen } from './screens/RulesScreen';
 import { ReadyScreen } from './screens/ReadyScreen';
 import { HuntScreen } from './screens/HuntScreen';
 import { ArrivalScreen } from './screens/ArrivalScreen';
@@ -109,7 +111,9 @@ function AppRoutes() {
           containing block for the fixed-position dialogs the screens render. */}
       <div className="screen-transition" key={location.pathname}>
         <Routes location={location}>
-          <Route path="/" element={<SetupScreen />} />
+          <Route path="/" element={<WelcomeScreen />} />
+          <Route path="/team" element={<SetupScreen />} />
+          <Route path="/rules" element={<RulesScreen />} />
           <Route path="/ready" element={<ReadyScreen />} />
           <Route path="/hunt" element={<HuntScreen />} />
           <Route path="/arrival" element={<ArrivalScreen />} />
@@ -117,8 +121,8 @@ function AppRoutes() {
           <Route path="/victory" element={<VictoryScreen />} />
           <Route path="/stats" element={<StatsScreen />} />
           <Route path="/cheatsheet" element={<CheatSheetScreen />} />
-          {/* Unknown paths fall through to setup; PhaseGate then corrects. */}
-          <Route path="*" element={<SetupScreen />} />
+          {/* Unknown paths fall through to welcome; PhaseGate then corrects. */}
+          <Route path="*" element={<WelcomeScreen />} />
         </Routes>
       </div>
     </>

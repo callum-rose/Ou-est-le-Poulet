@@ -2,7 +2,9 @@ import type { GamePhase } from '../types';
 
 /** Canonical route for each game phase (PhaseGate drives navigation). */
 export const routeForPhase: Record<GamePhase, string> = {
-  setup: '/',
+  welcome: '/',
+  setup: '/team',
+  rules: '/rules',
   ready: '/ready',
   hunting: '/hunt',
   arrival: '/arrival',
@@ -21,12 +23,14 @@ export const phaseForRoute: Record<string, GamePhase> = Object.fromEntries(
  * links that jump ahead of the current phase.
  */
 export const phaseOrder: Record<GamePhase, number> = {
-  setup: 0,
-  ready: 1,
-  hunting: 2,
-  arrival: 3,
-  challenge: 4,
-  found: 5,
+  welcome: 0,
+  setup: 1,
+  rules: 2,
+  ready: 3,
+  hunting: 4,
+  arrival: 5,
+  challenge: 6,
+  found: 7,
 };
 
 /**
@@ -34,7 +38,13 @@ export const phaseOrder: Record<GamePhase, number> = {
  * screens (arrival, challenge) and the terminal victory screen are excluded —
  * you can't wander back into them once the phase has moved on.
  */
-export const BACK_NAVIGABLE_PHASES: GamePhase[] = ['setup', 'ready', 'hunting'];
+export const BACK_NAVIGABLE_PHASES: GamePhase[] = [
+  'welcome',
+  'setup',
+  'rules',
+  'ready',
+  'hunting',
+];
 
 /** Routes that are exempt from phase-driven redirects. */
 export const PHASE_EXEMPT_ROUTES = ['/stats', '/cheatsheet'];

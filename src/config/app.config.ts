@@ -38,10 +38,19 @@ export const copy = {
   appTitle: 'Pub Hunt',
   tagline: "Find the stag before the beer runs out.",
 
+  welcome: {
+    heading: "Welcome to Jack's pub crawl",
+    body: "The stag is hiding in one of Prague's finest pubs. Round up your team, sink a few, and track him down.",
+    cta: "Let's go",
+  },
   setup: {
     heading: 'Name your team',
     placeholder: 'e.g. The Liver Birds',
     cta: 'Continue',
+  },
+  rulesScreen: {
+    heading: 'The rules',
+    cta: 'Got it — continue',
   },
   ready: {
     heading: 'Ready to hunt?',
@@ -70,6 +79,7 @@ export const copy = {
   },
   challenge: {
     heading: 'Your challenge',
+    introSubtitle: 'Before you set off',
     completedCta: 'Challenge completed',
     noneLeft:
       "You've done every challenge — nice work. Keep hunting, no challenge this round.",

@@ -3,12 +3,13 @@ import type { GameAction, GameState, Visit } from '../types';
 
 export const initialState: GameState = {
   schemaVersion: appConfig.schemaVersion,
-  phase: 'setup',
+  phase: 'welcome',
   team: null,
   startedAt: null,
   finishedAt: null,
   visits: [],
   challengeCursor: 0,
+  introChallengeIndex: null,
   pendingPubId: null,
   breadcrumbs: [],
   geo: { status: 'unknown', last: null },
@@ -29,21 +30,43 @@ export function isPubCompleted(state: GameState, pubId: string): boolean {
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
+    case 'BEGIN': {
+      if (state.phase !== 'welcome') return state;
+      return { ...state, phase: 'setup' };
+    }
+
     case 'SET_TEAM_NAME': {
       const name = action.name.trim();
       if (!name) return state;
-      // Naming the team during setup advances to ready. If the team navigates
-      // back to rename later, keep the current phase rather than regressing.
+      // Naming the team during setup advances to the rules screen. If the team
+      // navigates back to rename later, keep the current phase rather than
+      // regressing.
       return {
         ...state,
         team: { name },
-        phase: state.phase === 'setup' ? 'ready' : state.phase,
+        phase: state.phase === 'setup' ? 'rules' : state.phase,
       };
+    }
+
+    case 'ACCEPT_RULES': {
+      if (state.phase !== 'rules') return state;
+      return { ...state, phase: 'ready' };
     }
 
     case 'START_GAME': {
       if (state.phase !== 'ready') return state;
-      return { ...state, phase: 'hunting', startedAt: action.at };
+      // Start the clock and drop straight into an opening challenge (no pub).
+      // It consumes the cursor, so the first pub gets the next challenge.
+      const introChallengeIndex = action.loop
+        ? state.challengeCursor % action.challengeCount
+        : Math.min(state.challengeCursor, action.challengeCount - 1);
+      return {
+        ...state,
+        phase: 'challenge',
+        startedAt: action.at,
+        introChallengeIndex,
+        challengeCursor: state.challengeCursor + 1,
+      };
     }
 
     case 'ARRIVE_AT_PUB': {
@@ -105,7 +128,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           break;
         }
       }
-      return { ...state, phase: 'hunting', pendingPubId: null, visits };
+      return {
+        ...state,
+        phase: 'hunting',
+        pendingPubId: null,
+        introChallengeIndex: null,
+        visits,
+      };
     }
 
     case 'FOUND_STAG': {

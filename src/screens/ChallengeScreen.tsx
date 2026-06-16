@@ -9,12 +9,16 @@ export function ChallengeScreen() {
   const { state, dispatch } = useGame();
   const { sample } = useGeolocation();
 
-  // The open visit is the last one without a completion stamp.
+  // A challenge comes either from the open pub visit (the last one without a
+  // completion stamp) or, before any pub, from the opening "intro" challenge.
   const openVisit = [...state.visits].reverse().find((v) => v.completedAt === null);
+  const challengeIndex = openVisit
+    ? openVisit.challengeIndex
+    : state.introChallengeIndex;
   const pub = openVisit ? pubs.find((p) => p.id === openVisit.pubId) : undefined;
   const challenge =
-    openVisit && challenges.length > 0
-      ? challenges[openVisit.challengeIndex]
+    challengeIndex !== null && challengeIndex !== undefined && challenges.length > 0
+      ? challenges[challengeIndex]
       : undefined;
 
   const complete = () => {
@@ -25,7 +29,7 @@ export function ChallengeScreen() {
   return (
     <Screen
       title={copy.challenge.heading}
-      subtitle={pub ? `At ${pub.name}` : undefined}
+      subtitle={pub ? `At ${pub.name}` : copy.challenge.introSubtitle}
       footer={
         <BigButton variant="success" onClick={complete}>
           {copy.challenge.completedCta}

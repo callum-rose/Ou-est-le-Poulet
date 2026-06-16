@@ -1,7 +1,9 @@
 // Shared types for the pub-hunt game.
 
 export type GamePhase =
+  | 'welcome'
   | 'setup'
+  | 'rules'
   | 'ready'
   | 'hunting'
   | 'arrival'
@@ -47,6 +49,8 @@ export interface GameState {
   finishedAt: number | null; // set on FOUND_STAG
   visits: Visit[]; // ordered by arrival
   challengeCursor: number; // next challenge index to hand out
+  /** Challenge shown before the hunt begins (no pub). Null once completed. */
+  introChallengeIndex: number | null;
   pendingPubId: string | null; // pub awaiting arrival confirmation
   breadcrumbs: Breadcrumb[]; // capped (see persistence)
   geo: {
@@ -56,8 +60,10 @@ export interface GameState {
 }
 
 export type GameAction =
+  | { type: 'BEGIN' }
   | { type: 'SET_TEAM_NAME'; name: string }
-  | { type: 'START_GAME'; at: number }
+  | { type: 'ACCEPT_RULES' }
+  | { type: 'START_GAME'; at: number; challengeCount: number; loop: boolean }
   | { type: 'ARRIVE_AT_PUB'; pubId: string; at: number }
   | { type: 'CONFIRM_PUB'; at: number; challengeCount: number; loop: boolean }
   | { type: 'CANCEL_ARRIVAL' }

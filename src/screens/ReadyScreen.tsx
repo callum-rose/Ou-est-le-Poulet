@@ -1,4 +1,5 @@
-import { copy } from '../config/app.config';
+import { appConfig, copy } from '../config/app.config';
+import { challenges } from '../config/data';
 import { useGame } from '../state/GameContext';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { BigButton } from '../components/ui/BigButton';
@@ -11,7 +12,12 @@ export function ReadyScreen() {
   const start = async () => {
     // This tap is the user gesture iOS requires before the geolocation prompt.
     void sample();
-    dispatch({ type: 'START_GAME', at: Date.now() });
+    dispatch({
+      type: 'START_GAME',
+      at: Date.now(),
+      challengeCount: challenges.length,
+      loop: appConfig.loopChallenges,
+    });
   };
 
   return (
