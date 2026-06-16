@@ -10,3 +10,4 @@ https://www.google.com/maps/place/Beer+Point+:+Craft+Beer+Pub/@50.0788763,14.429
 https://www.google.com/maps/place/Bar+U+Kl%C3%AD%C4%8D%C5%AF/@50.0866684,14.4047887,17z | bar oo KLEE-choo
 https://www.google.com/maps/place/NAPA+bar+and+gallery/@50.0867889,14.404391,17z
 https://www.google.com/maps/place/Lo%C4%8F+Pivovar/@50.0934837,14.4266012,17z | loch PIV-o-var
+https://www.google.com/maps/place/Dno+pytle/@50.0771063,14.4428117,17z | dno PIT-leh
