@@ -1,5 +1,5 @@
 import { QRCodeSVG } from 'qrcode.react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { copy } from '../config/app.config';
 import { challenges, pubs } from '../config/data';
 import { Screen } from '../components/ui/Screen';
@@ -13,13 +13,22 @@ function appRootUrl(): string {
 
 export function CheatSheetScreen() {
   const url = appRootUrl();
+  const navigate = useNavigate();
 
   return (
     <Screen
       title={copy.cheatsheet.heading}
       footer={
         <div className="link-row">
-          <Link to="/">{copy.cheatsheet.backLink}</Link>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(-1);
+            }}
+          >
+            {copy.cheatsheet.backLink}
+          </a>
         </div>
       }
     >
