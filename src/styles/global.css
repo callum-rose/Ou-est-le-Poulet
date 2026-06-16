@@ -178,14 +178,46 @@ button {
 }
 .app-header__team {
   min-width: 0;
+  overflow: hidden;
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 20px;
+  line-height: 1.15;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--color-text-muted);
   word-break: break-word;
   text-align: right;
+}
+.app-header__team-track {
+  display: block;
+  /* Allow up to two wrapped lines before we fall back to scrolling. */
+  overflow-wrap: anywhere;
+}
+.app-header__team--marquee .app-header__team-track {
+  display: inline-block;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  will-change: transform;
+  animation: app-header__team-scroll 6s ease-in-out infinite alternate;
+}
+@keyframes app-header__team-scroll {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  88%,
+  100% {
+    transform: translateX(var(--team-scroll, 0));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-header__team--marquee .app-header__team-track {
+    animation: none;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 /* ---- Screen layout ---- */

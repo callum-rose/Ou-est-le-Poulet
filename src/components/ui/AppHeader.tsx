@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { copy } from '../../config/app.config';
 import { useGame } from '../../state/GameContext';
@@ -89,9 +90,76 @@ export function AppHeader() {
               </svg>
             </button>
           )}
-          {teamName && <span className="app-header__team">{teamName}</span>}
+          {teamName && <TeamName name={teamName} />}
         </div>
       </div>
     </header>
+  );
+}
+
+/**
+ * The current team name. It wraps to at most two lines; once a name is long
+ * enough to need a third line we collapse it back onto a single line and scroll
+ * it horizontally so the whole name stays readable.
+ */
+function TeamName({ name }: { name: string }) {
+  const boxRef = useRef<HTMLSpanElement>(null);
+  const trackRef = useRef<HTMLSpanElement>(null);
+  const [marquee, setMarquee] = useState(false);
+  const [scrollDistance, setScrollDistance] = useState(0);
+
+  useLayoutEffect(() => {
+    const box = boxRef.current;
+    const track = trackRef.current;
+    if (!box || !track) return;
+
+    const measure = () => {
+      // Measure the wrapped height with any marquee styling stripped, so the
+      // result never depends on the mode we're currently in.
+      track.style.display = 'block';
+      track.style.whiteSpace = 'normal';
+      track.style.transform = 'none';
+      const lineHeight = parseFloat(getComputedStyle(track).lineHeight) || 1;
+      const lines = Math.round(track.scrollHeight / lineHeight);
+      const overflows = lines > 2;
+
+      let distance = 0;
+      if (overflows) {
+        // How far the name overflows its box when forced onto one line.
+        track.style.whiteSpace = 'nowrap';
+        distance = track.scrollWidth - box.clientWidth;
+      }
+
+      track.style.display = '';
+      track.style.whiteSpace = '';
+      track.style.transform = '';
+
+      setScrollDistance(distance > 0 ? distance : 0);
+      setMarquee(overflows);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [name]);
+
+  // Keep the scroll speed roughly constant regardless of the name's length.
+  const trackStyle = marquee
+    ? ({
+        '--team-scroll': `${-scrollDistance}px`,
+        animationDuration: `${Math.max(4, scrollDistance / 30)}s`,
+      } as CSSProperties)
+    : undefined;
+
+  return (
+    <span
+      ref={boxRef}
+      className={`app-header__team${marquee ? ' app-header__team--marquee' : ''}`}
+    >
+      <span ref={trackRef} className="app-header__team-track" style={trackStyle}>
+        {name}
+      </span>
+    </span>
   );
 }
