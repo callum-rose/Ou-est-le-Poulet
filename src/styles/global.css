@@ -59,10 +59,14 @@ button {
 /* Wrapper around the routed screens. Re-keyed on every route change so the
    enter animation replays. Fills the flex space below the header with a
    definite height, keeping the height chain intact for screens whose layout
-   (footer pinning, the Leaflet map) relies on it. */
+   (footer pinning, the Leaflet map) relies on it. Owns the scroll: long
+   screens scroll inside this region rather than the document, so the sticky
+   header — a sibling outside this box — can never be dragged off-screen by
+   #root's 100dvh clamp. */
 .screen-transition {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
   animation: screen-enter 260ms ease both;
 }
 @keyframes screen-enter {
