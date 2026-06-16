@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { BigButton } from './BigButton';
 
 interface ConfirmDialogProps {
@@ -17,7 +18,7 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  return (
+  return createPortal(
     <div
       className="dialog-backdrop"
       role="dialog"
@@ -33,6 +34,7 @@ export function ConfirmDialog({
           {cancelLabel}
         </BigButton>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
