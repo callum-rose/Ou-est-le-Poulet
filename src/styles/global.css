@@ -513,6 +513,23 @@ button {
   text-decoration: underline;
 }
 
+/* ---- Welcome screen ---- */
+.screen.welcome {
+  height: 100%;
+  min-height: unset;
+  overflow: hidden;
+}
+.screen.welcome .screen__body {
+  min-height: 0;
+}
+.welcome__photo {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
 /* ---- Cheat sheet ---- */
 .cheat-section {
   margin-bottom: var(--space-5);
