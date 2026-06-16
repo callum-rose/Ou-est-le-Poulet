@@ -11,6 +11,17 @@ body,
   margin: 0;
 }
 
+/* #root is a flex column so the sticky header takes its natural height and the
+   routed screen fills exactly the space below it. Without this the header sits
+   in flow above a full-height screen, overflowing the viewport by the header's
+   height and pushing content-light screens' footer CTA off the bottom. 100dvh
+   tracks the visible area as mobile browser chrome (the URL bar) shows/hides. */
+#root {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
@@ -43,10 +54,12 @@ button {
 
 /* ---- Screen transition ---- */
 /* Wrapper around the routed screens. Re-keyed on every route change so the
-   enter animation replays. Keeps the 100% height chain intact for screens
-   whose layout (footer pinning, the Leaflet map) relies on it. */
+   enter animation replays. Fills the flex space below the header with a
+   definite height, keeping the height chain intact for screens whose layout
+   (footer pinning, the Leaflet map) relies on it. */
 .screen-transition {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   animation: screen-enter 260ms ease both;
 }
 @keyframes screen-enter {
