@@ -13,8 +13,10 @@ import {
 import { clearState } from '../state/persistence';
 import { formatDistance } from '../lib/geo';
 import { formatClock, formatDuration } from '../lib/time';
+import { buildShareText } from '../lib/summary';
 import { BigButton } from '../components/ui/BigButton';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
+import { RouteMap } from '../components/Map/RouteMap';
 import { Screen } from '../components/ui/Screen';
 import { Stat } from '../components/ui/Stat';
 
@@ -22,18 +24,31 @@ export function StatsScreen() {
   const { state, dispatch } = useGame();
   const navigate = useNavigate();
 
+  // Once the stag is found this screen doubles as the victory screen: same
+  // rich stats, but different heading and footer actions.
+  const finished = state.finishedAt !== null;
+
   // Tick once a second to keep the live total time fresh (until finished).
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    if (state.finishedAt) return;
+    if (finished) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-  }, [state.finishedAt]);
+  }, [finished]);
 
   const visits = useMemo(() => completedVisits(state), [state]);
+  // Visited pubs resolved to coordinates, in arrival order — the team's route.
+  const route = useMemo(
+    () =>
+      visits
+        .map((v) => pubs.find((p) => p.id === v.pubId))
+        .filter((p): p is (typeof pubs)[number] => p !== undefined),
+    [visits],
+  );
   const progress = useMemo(() => challengeProgress(state), [state]);
   const timeline = useMemo(() => progressTimeline(state), [state]);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [shared, setShared] = useState(false);
 
   const reset = () => {
     clearState();
@@ -42,20 +57,61 @@ export function StatsScreen() {
     navigate('/', { replace: true });
   };
 
+  // PhaseGate ignores the exempt /stats route, so resuming the hunt has to
+  // drive navigation itself.
+  const resumeHunt = () => {
+    dispatch({ type: 'RESUME_HUNT' });
+    navigate('/hunt');
+  };
+
+  const share = async () => {
+    const text = buildShareText(state, now);
+    try {
+      if (navigator.share) {
+        await navigator.share({ text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    } catch {
+      // User cancelled the share sheet, or clipboard blocked — no-op.
+    }
+  };
+
   return (
     <Screen
-      title={copy.stats.heading}
+      title={finished ? copy.stats.victoryHeading : copy.stats.heading}
       footer={
-        <>
-          <BigButton variant="secondary" onClick={() => navigate(-1)}>
-            {copy.stats.backCta}
-          </BigButton>
-          {/* Hidden reset: ghost styling + confirm gate so it isn't a fat-
-              finger hazard mid-game. */}
-          <BigButton variant="ghost" onClick={() => setConfirmReset(true)}>
-            {copy.stats.resetCta}
-          </BigButton>
-        </>
+        finished ? (
+          <>
+            <BigButton variant="success" onClick={share}>
+              {shared ? copy.stats.shareCopied : copy.stats.shareCta}
+            </BigButton>
+            <div className="link-row">
+              <button className="link-button" onClick={resumeHunt}>
+                {copy.stats.resumeHuntCta}
+              </button>
+              <button
+                className="link-button"
+                onClick={() => setConfirmReset(true)}
+              >
+                {copy.stats.resetCta}
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <BigButton variant="secondary" onClick={() => navigate(-1)}>
+              {copy.stats.backCta}
+            </BigButton>
+            {/* Hidden reset: ghost styling + confirm gate so it isn't a fat-
+                finger hazard mid-game. */}
+            <BigButton variant="ghost" onClick={() => setConfirmReset(true)}>
+              {copy.stats.resetCta}
+            </BigButton>
+          </>
+        )
       }
     >
       <div className="progress-banner">
@@ -63,9 +119,11 @@ export function StatsScreen() {
           {progress.done} of {progress.total} {copy.stats.challengesDoneLabel}
         </div>
         <p className="progress-banner__message">
-          {progress.remaining > 0
-            ? copy.stats.nextChallengeMessage
-            : copy.stats.allChallengesDone}
+          {finished
+            ? copy.stats.finishedMessage
+            : progress.remaining > 0
+              ? copy.stats.nextChallengeMessage
+              : copy.stats.allChallengesDone}
         </p>
       </div>
 
@@ -78,52 +136,60 @@ export function StatsScreen() {
         />
       </div>
 
-      {timeline.length > 0 && (
+      {state.startedAt !== null && (
         <div>
           <h2>{copy.stats.pubsInOrderHeading}</h2>
-          <ol className="timeline">
-            {timeline.map((stop, i) => {
-              const name = stop.pubId
-                ? pubs.find((p) => p.id === stop.pubId)?.name ?? stop.pubId
-                : copy.stats.introStopLabel;
-              const challenge =
-                stop.challengeIndex !== null ? challenges[stop.challengeIndex] : undefined;
-              const dwell =
-                stop.arrivedAt !== null && stop.completedAt !== null && stop.pubId
-                  ? stop.completedAt - stop.arrivedAt
-                  : null;
-              return (
-                <li
-                  className="timeline__item"
-                  key={`${stop.pubId ?? 'intro'}-${stop.arrivedAt ?? i}`}
-                >
-                  <time className="timeline__time">
-                    {stop.arrivedAt !== null ? formatClock(stop.arrivedAt) : ''}
-                  </time>
-                  <div className="timeline__body">
-                    <div className="timeline__head">
-                      <strong className="timeline__name">{name}</strong>
-                      {dwell !== null && (
-                        <span className="timeline__dwell">
-                          {copy.stats.dwellLabel} {formatDuration(dwell)}
-                        </span>
+          {route.length > 0 && (
+            <div className="route-map-wrap">
+              <RouteMap route={route} crumbs={state.breadcrumbs} />
+            </div>
+          )}
+
+          {timeline.length > 0 && (
+            <ol className="timeline">
+              {timeline.map((stop, i) => {
+                const name = stop.pubId
+                  ? pubs.find((p) => p.id === stop.pubId)?.name ?? stop.pubId
+                  : copy.stats.introStopLabel;
+                const challenge =
+                  stop.challengeIndex !== null ? challenges[stop.challengeIndex] : undefined;
+                const dwell =
+                  stop.arrivedAt !== null && stop.completedAt !== null && stop.pubId
+                    ? stop.completedAt - stop.arrivedAt
+                    : null;
+                return (
+                  <li
+                    className="timeline__item"
+                    key={`${stop.pubId ?? 'intro'}-${stop.arrivedAt ?? i}`}
+                  >
+                    <time className="timeline__time">
+                      {stop.arrivedAt !== null ? formatClock(stop.arrivedAt) : ''}
+                    </time>
+                    <div className="timeline__body">
+                      <div className="timeline__head">
+                        <strong className="timeline__name">{name}</strong>
+                        {dwell !== null && (
+                          <span className="timeline__dwell">
+                            {copy.stats.dwellLabel} {formatDuration(dwell)}
+                          </span>
+                        )}
+                      </div>
+                      {challenge ? (
+                        <div className="challenge-done">
+                          <span className="challenge-done__title">{challenge.title}</span>
+                          <span className="challenge-done__desc">{challenge.description}</span>
+                        </div>
+                      ) : (
+                        <div className="challenge-done challenge-done--none">
+                          {copy.stats.noChallengeLabel}
+                        </div>
                       )}
                     </div>
-                    {challenge ? (
-                      <div className="challenge-done">
-                        <span className="challenge-done__title">{challenge.title}</span>
-                        <span className="challenge-done__desc">{challenge.description}</span>
-                      </div>
-                    ) : (
-                      <div className="challenge-done challenge-done--none">
-                        {copy.stats.noChallengeLabel}
-                      </div>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
         </div>
       )}
 

@@ -97,16 +97,14 @@ export const copy = {
     body: "Your team has already searched this pub. He's not here — try somewhere new.",
     cta: 'Back to the hunt',
   },
-  victory: {
-    heading: 'You found him! 🏆',
-    shareCta: 'Share result',
-    shareCopied: 'Copied to clipboard',
-    statsLink: 'Progress',
-    resumeHuntCta: 'Resume hunt',
-    routeHeading: 'Your route',
-  },
   stats: {
     heading: 'Your hunt',
+    // Shown in place of `heading` once the stag has been found — the same
+    // screen doubles as the victory screen.
+    victoryHeading: 'You found him! 🏆',
+    shareCta: 'Share result',
+    shareCopied: 'Copied to clipboard',
+    resumeHuntCta: 'Resume hunt',
 resetCta: 'Reset game',
     resetConfirm:
       'This wipes your team, progress and trail. This cannot be undone. Reset?',
@@ -119,6 +117,8 @@ resetCta: 'Reset game',
     nextChallengeMessage: 'Get to the next pub for your next challenge.',
     allChallengesDone:
       "You've completed every challenge — nice work! Now just find the stag.",
+    // Shown in the progress banner once the stag has been found.
+    finishedMessage: 'Hunt complete — you tracked the stag down. 🍻',
     introStopLabel: 'Before you set off',
     noChallengeLabel: 'No challenge this round',
   },
