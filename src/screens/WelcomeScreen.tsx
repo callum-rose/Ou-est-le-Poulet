@@ -8,6 +8,7 @@ export function WelcomeScreen() {
 
   return (
     <Screen
+      className="welcome"
       title={copy.welcome.heading}
       subtitle={copy.tagline}
       footer={
@@ -17,6 +18,7 @@ export function WelcomeScreen() {
       }
     >
       <p>{copy.welcome.body}</p>
+      <img src="/IMG_2317_3.jpeg" alt="Jack" className="welcome__photo" />
     </Screen>
   );
 }
