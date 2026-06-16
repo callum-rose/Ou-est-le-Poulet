@@ -9,7 +9,10 @@ export const routeForPhase: Record<GamePhase, string> = {
   hunting: '/hunt',
   arrival: '/arrival',
   challenge: '/challenge',
-  found: '/victory',
+  // The stats screen doubles as the terminal victory screen. It's an exempt
+  // overlay, so PhaseGate won't drive navigation to/from it — the found-phase
+  // screen navigates explicitly (resume → /hunt, reset → /).
+  found: '/stats',
 };
 
 /** Reverse lookup: which phase a route belongs to (undefined for overlays). */

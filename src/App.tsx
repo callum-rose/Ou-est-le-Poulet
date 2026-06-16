@@ -22,7 +22,6 @@ import { ReadyScreen } from './screens/ReadyScreen';
 import { HuntScreen } from './screens/HuntScreen';
 import { ArrivalScreen } from './screens/ArrivalScreen';
 import { ChallengeScreen } from './screens/ChallengeScreen';
-import { VictoryScreen } from './screens/VictoryScreen';
 import { StatsScreen } from './screens/StatsScreen';
 import { CheatSheetScreen } from './screens/CheatSheetScreen';
 
@@ -118,7 +117,6 @@ function AppRoutes() {
           <Route path="/hunt" element={<HuntScreen />} />
           <Route path="/arrival" element={<ArrivalScreen />} />
           <Route path="/challenge" element={<ChallengeScreen />} />
-          <Route path="/victory" element={<VictoryScreen />} />
           <Route path="/stats" element={<StatsScreen />} />
           <Route path="/cheatsheet" element={<CheatSheetScreen />} />
           {/* Unknown paths fall through to welcome; PhaseGate then corrects. */}
