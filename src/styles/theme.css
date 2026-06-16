@@ -1,25 +1,42 @@
 /* Theme tokens. Re-theming should only need to touch this file. */
 :root {
-  --color-bg: #1b1b1f;
-  --color-surface: #26262c;
-  --color-surface-raised: #32323a;
-  --color-border: #3d3d46;
-  --color-text: #f2f2f5;
-  --color-text-muted: #a8a8b3;
+  /* Palette: https://coolors.co/080705-40434e-f0c839-702632-912f40
+     080705 near-black · 40434E slate · F0C839 saffron · 702632 wine · 912F40 raspberry */
+  --palette-black: #080705;
+  --palette-slate: #40434e;
+  --palette-saffron: #f0c839;
+  --palette-wine: #702632;
+  --palette-raspberry: #912f40;
 
-  --color-primary: #f5a524;
-  --color-primary-text: #1b1b1f;
-  --color-success: #36c275;
-  --color-danger: #e5484d;
+  --color-bg: #080705;
+  --color-surface: #1a1b22;
+  --color-surface-raised: #2a2c37;
+  --color-border: #40434e;
+  --color-text: #f7f4ec;
+  --color-text-muted: #a7a8b3;
 
-  --color-pub-unvisited: #f5a524;
-  --color-pub-visited: #6b6b78;
-  --color-live: #3b9dff;
-  --color-trail: #3b9dff;
+  --color-primary: #f0c839;
+  --color-primary-text: #080705;
+  --color-secondary: #702632;
+  --color-secondary-text: #fbeede;
+  --color-success: #912f40;
+  --color-success-text: #fff4f5;
+  --color-danger: #702632;
+  --color-danger-text: #fff4f5;
+  --color-accent: #912f40;
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
+  --color-pub-unvisited: #f0c839;
+  --color-pub-visited: #702632;
+  --color-live: #912f40;
+  --color-trail: #f0c839;
+
+  /* Angular theme: geometry comes from gently slanted trapezium clip-paths.
+     --slant is how far each bottom corner pulls inward. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --slant: 14px;
+  --slant-lg: 22px;
 
   --space-1: 4px;
   --space-2: 8px;
