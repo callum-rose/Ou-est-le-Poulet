@@ -757,7 +757,7 @@ button {
   flex: 1;
   min-height: 0;
   border-radius: var(--radius-md);
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* ---- Cheat sheet ---- */
