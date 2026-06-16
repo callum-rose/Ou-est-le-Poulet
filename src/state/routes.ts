@@ -2,7 +2,9 @@ import type { GamePhase } from '../types';
 
 /** Canonical route for each game phase (PhaseGate drives navigation). */
 export const routeForPhase: Record<GamePhase, string> = {
-  setup: '/',
+  welcome: '/',
+  setup: '/team',
+  rules: '/rules',
   ready: '/ready',
   hunting: '/hunt',
   arrival: '/arrival',

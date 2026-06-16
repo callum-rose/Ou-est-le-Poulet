@@ -8,7 +8,9 @@ import {
 } from 'react-router-dom';
 import { GameProvider, useGame } from './state/GameContext';
 import { PHASE_EXEMPT_ROUTES, routeForPhase } from './state/routes';
+import { WelcomeScreen } from './screens/WelcomeScreen';
 import { SetupScreen } from './screens/SetupScreen';
+import { RulesScreen } from './screens/RulesScreen';
 import { ReadyScreen } from './screens/ReadyScreen';
 import { HuntScreen } from './screens/HuntScreen';
 import { ArrivalScreen } from './screens/ArrivalScreen';
@@ -43,7 +45,9 @@ function AppRoutes() {
     <>
       <PhaseGate />
       <Routes>
-        <Route path="/" element={<SetupScreen />} />
+        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/team" element={<SetupScreen />} />
+        <Route path="/rules" element={<RulesScreen />} />
         <Route path="/ready" element={<ReadyScreen />} />
         <Route path="/hunt" element={<HuntScreen />} />
         <Route path="/arrival" element={<ArrivalScreen />} />
@@ -51,8 +55,8 @@ function AppRoutes() {
         <Route path="/victory" element={<VictoryScreen />} />
         <Route path="/stats" element={<StatsScreen />} />
         <Route path="/cheatsheet" element={<CheatSheetScreen />} />
-        {/* Unknown paths fall through to setup; PhaseGate then corrects. */}
-        <Route path="*" element={<SetupScreen />} />
+        {/* Unknown paths fall through to welcome; PhaseGate then corrects. */}
+        <Route path="*" element={<WelcomeScreen />} />
       </Routes>
     </>
   );
