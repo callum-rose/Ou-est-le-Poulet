@@ -23,8 +23,6 @@ export function CheatSheetScreen() {
         </div>
       }
     >
-      <p className="notice notice--warn">{copy.cheatsheet.warning}</p>
-
       <section className="cheat-section">
         <h2>{copy.cheatsheet.qrHeading}</h2>
         <p className="muted">{copy.cheatsheet.qrBody}</p>
@@ -33,10 +31,11 @@ export function CheatSheetScreen() {
             background: '#fff',
             padding: 16,
             borderRadius: 14,
-            width: 'fit-content',
+            width: '100%',
+            boxSizing: 'border-box',
           }}
         >
-          <QRCodeSVG value={url} size={180} />
+          <QRCodeSVG value={url} size="100%" />
         </div>
         <p className="muted" style={{ fontSize: 13, wordBreak: 'break-all' }}>
           {url}
