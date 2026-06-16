@@ -591,6 +591,33 @@ button {
   pointer-events: auto;
   cursor: pointer;
 }
+
+/* Completed-route map on the victory screen. */
+.route-map-wrap {
+  height: clamp(220px, 38vh, 420px);
+  margin-bottom: var(--space-4);
+}
+.route-map {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+/* Round, numbered stop markers — upright text, unlike the diamond pub pins. */
+.route-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-pub-unvisited);
+  color: var(--color-primary-text);
+  font-size: 14px;
+  font-weight: 700;
+  border: 2px solid rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
 .live-pin {
   width: 18px;
   height: 18px;

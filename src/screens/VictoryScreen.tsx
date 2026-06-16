@@ -12,6 +12,7 @@ import { formatDistance } from '../lib/geo';
 import { formatDuration } from '../lib/time';
 import { buildShareText } from '../lib/summary';
 import { BigButton } from '../components/ui/BigButton';
+import { RouteMap } from '../components/Map/RouteMap';
 import { Screen } from '../components/ui/Screen';
 import { Stat } from '../components/ui/Stat';
 
@@ -21,6 +22,14 @@ export function VictoryScreen() {
   const now = state.finishedAt ?? Date.now();
 
   const visits = useMemo(() => completedVisits(state), [state]);
+  // Visited pubs resolved to coordinates, in arrival order — the team's route.
+  const route = useMemo(
+    () =>
+      visits
+        .map((v) => pubs.find((p) => p.id === v.pubId))
+        .filter((p): p is (typeof pubs)[number] => p !== undefined),
+    [visits],
+  );
   const [shared, setShared] = useState(false);
 
   const share = async () => {
@@ -70,6 +79,11 @@ export function VictoryScreen() {
       {visits.length > 0 && (
         <div>
           <h2>{copy.victory.routeHeading}</h2>
+          {route.length > 0 && (
+            <div className="route-map-wrap">
+              <RouteMap route={route} crumbs={state.breadcrumbs} />
+            </div>
+          )}
           <ol className="cheat-list">
             {visits.map((v) => (
               <li key={`${v.pubId}-${v.arrivedAt}`}>
