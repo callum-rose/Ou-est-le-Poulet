@@ -118,6 +118,28 @@ button {
   text-transform: uppercase;
   color: var(--color-primary);
 }
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.app-header__rules-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.app-header__rules-btn:active {
+  opacity: 0.7;
+}
 .app-header__team {
   min-width: 0;
   font-size: 15px;
