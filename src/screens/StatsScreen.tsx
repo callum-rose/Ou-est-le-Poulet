@@ -46,7 +46,7 @@ export function StatsScreen() {
       footer={
         <>
           <BigButton variant="secondary" onClick={() => navigate(-1)}>
-            Back
+            {copy.stats.backCta}
           </BigButton>
           {/* Hidden reset: ghost styling + confirm gate so it isn't a fat-
               finger hazard mid-game. */}
@@ -57,19 +57,19 @@ export function StatsScreen() {
       }
     >
       <div className="stat-grid">
-        <Stat value={formatDuration(totalTimeMs(state, now))} label="Total time" />
-        <Stat value={String(visits.length)} label="Pubs searched" />
+        <Stat value={formatDuration(totalTimeMs(state, now))} label={copy.statLabels.totalTime} />
+        <Stat value={String(visits.length)} label={copy.statLabels.pubsSearched} />
         <Stat
           value={formatDistance(approxDistanceM(state))}
-          label="Approx distance"
+          label={copy.statLabels.approxDistance}
         />
-        <Stat value={String(state.breadcrumbs.length)} label="GPS samples" />
+        <Stat value={String(state.breadcrumbs.length)} label={copy.statLabels.gpsSamples} />
       </div>
       <p className="muted">{copy.stats.distanceDisclaimer}</p>
 
       {visits.length > 0 && (
         <div>
-          <h2>Pubs in order</h2>
+          <h2>{copy.stats.pubsInOrderHeading}</h2>
           <ol className="cheat-list">
             {visits.map((v) => {
               const name = pubs.find((p) => p.id === v.pubId)?.name ?? v.pubId;
@@ -77,7 +77,7 @@ export function StatsScreen() {
                 <li key={`${v.pubId}-${v.arrivedAt}`}>
                   <strong>{name}</strong>
                   <div className="muted" style={{ fontSize: 14 }}>
-                    {formatClock(v.arrivedAt)} · dwell {formatDuration(dwellMs(v))}
+                    {formatClock(v.arrivedAt)} · {copy.stats.dwellLabel} {formatDuration(dwellMs(v))}
                   </div>
                 </li>
               );

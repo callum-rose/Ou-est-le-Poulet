@@ -48,29 +48,29 @@ export function VictoryScreen() {
             {shared ? copy.victory.shareCopied : copy.victory.shareCta}
           </BigButton>
           <div className="link-row">
-            <Link to="/stats">Full stats</Link>
+            <Link to="/stats">{copy.victory.statsLink}</Link>
             <button
               className="link-button"
               onClick={() => dispatch({ type: 'RESUME_HUNT' })}
             >
-              Resume hunt
+              {copy.victory.resumeHuntCta}
             </button>
           </div>
         </>
       }
     >
       <div className="stat-grid">
-        <Stat value={formatDuration(totalTimeMs(state, now))} label="Total time" />
-        <Stat value={String(visits.length)} label="Pubs searched" />
+        <Stat value={formatDuration(totalTimeMs(state, now))} label={copy.statLabels.totalTime} />
+        <Stat value={String(visits.length)} label={copy.statLabels.pubsSearched} />
         <Stat
           value={formatDistance(approxDistanceM(state))}
-          label="Approx distance"
+          label={copy.statLabels.approxDistance}
         />
       </div>
 
       {visits.length > 0 && (
         <div>
-          <h2>Your route</h2>
+          <h2>{copy.victory.routeHeading}</h2>
           <ol className="cheat-list">
             {visits.map((v) => (
               <li key={`${v.pubId}-${v.arrivedAt}`}>

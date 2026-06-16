@@ -19,7 +19,7 @@ export function CheatSheetScreen() {
       title={copy.cheatsheet.heading}
       footer={
         <div className="link-row">
-          <Link to="/">Back to app</Link>
+          <Link to="/">{copy.cheatsheet.backLink}</Link>
         </div>
       }
     >

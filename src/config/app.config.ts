@@ -53,6 +53,12 @@ export const copy = {
     body: 'Pick a pub to search. The stag is hiding in one of them.',
     pickPrompt: 'Choose a pub to search',
     foundCta: 'We found him! 🎉',
+    statsLink: 'Stats',
+    allSearchedNotice:
+      "You've searched every pub — he must be in one you've been to. Time for the WhatsApp clues!",
+    foundConfirm: 'Found the stag? This ends the game and stamps your finish time.',
+    foundConfirmCta: 'Yes, we found him!',
+    foundConfirmCancel: 'Not yet',
   },
   arrival: {
     heading: 'Arrived at a pub?',
@@ -77,6 +83,9 @@ export const copy = {
     heading: 'You found him! 🏆',
     shareCta: 'Share result',
     shareCopied: 'Copied to clipboard',
+    statsLink: 'Full stats',
+    resumeHuntCta: 'Resume hunt',
+    routeHeading: 'Your route',
   },
   stats: {
     heading: 'Your hunt',
@@ -86,11 +95,14 @@ export const copy = {
       'This wipes your team, progress and trail. This cannot be undone. Reset?',
     resetConfirmCta: 'Yes, wipe everything',
     resetCancel: 'Cancel',
+    backCta: 'Back',
+    pubsInOrderHeading: 'Pubs in order',
+    dwellLabel: 'dwell',
   },
   geo: {
     denied:
-      'Location is off, so the map can’t show where you are. You can still pick pubs by hand.',
-    unavailable: 'Location isn’t available on this device. Pick pubs by hand.',
+      "Location is off, so the map can't show where you are. You can still pick pubs by hand.",
+    unavailable: "Location isn't available on this device. Pick pubs by hand.",
     foregroundOnly: 'Location only updates while this app is open on screen.',
   },
   cheatsheet: {
@@ -101,6 +113,13 @@ export const copy = {
     rulesHeading: 'Rules',
     qrHeading: 'Player onboarding',
     qrBody: 'Scan to open the hunt app.',
+    backLink: 'Back to app',
+  },
+  statLabels: {
+    totalTime: 'Total time',
+    pubsSearched: 'Pubs searched',
+    approxDistance: 'Approx distance',
+    gpsSamples: 'GPS samples',
   },
 
   rules: [

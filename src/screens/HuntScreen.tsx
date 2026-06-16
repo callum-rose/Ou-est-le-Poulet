@@ -77,10 +77,7 @@ export function HuntScreen() {
         />
 
         {allSearched && (
-          <p className="notice">
-            You've searched every pub — he must be in one you've been to. Time
-            for the WhatsApp clues!
-          </p>
+          <p className="notice">{copy.hunt.allSearchedNotice}</p>
         )}
       </div>
 
@@ -89,15 +86,15 @@ export function HuntScreen() {
           {copy.hunt.foundCta}
         </BigButton>
         <BigButton variant="primary" onClick={() => navigate('/stats')}>
-          Stats
+          {copy.hunt.statsLink}
         </BigButton>
       </footer>
 
       {confirmFound && (
         <ConfirmDialog
-          message="Found the stag? This ends the game and stamps your finish time."
-          confirmLabel="Yes, we found him!"
-          cancelLabel="Not yet"
+          message={copy.hunt.foundConfirm}
+          confirmLabel={copy.hunt.foundConfirmCta}
+          cancelLabel={copy.hunt.foundConfirmCancel}
           onConfirm={() => {
             setConfirmFound(false);
             dispatch({ type: 'FOUND_STAG', at: Date.now() });
