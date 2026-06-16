@@ -21,9 +21,15 @@ export function PubList({
   disableVisited = false,
   onSelect,
 }: PubListProps) {
+  const sorted = [...pubs].sort((a, b) => {
+    const aVisited = visitedIds.has(a.id) ? 1 : 0;
+    const bVisited = visitedIds.has(b.id) ? 1 : 0;
+    return aVisited - bVisited;
+  });
+
   return (
     <ul className="pub-list">
-      {pubs.map((pub) => {
+      {sorted.map((pub) => {
         const visited = visitedIds.has(pub.id);
         const suggested = suggestedId === pub.id;
         const dist = distancesM?.[pub.id];
