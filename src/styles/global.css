@@ -178,9 +178,8 @@ button {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  text-align: right;
 }
 
 /* ---- Screen layout ---- */
