@@ -6,12 +6,12 @@
 # Optionally add a pronunciation guide after a " | " (e.g. ... | loch PIV-o-var).
 https://www.google.com/maps/place/NAPA+bar+and+gallery/@50.0867889,14.404391,17z
 https://www.google.com/maps/place/Lo%C4%8F+Pivovar/@50.0934837,14.4266012,17z | loch PIV-o-var
-https://www.google.com/maps/place/CAF%C3%89+CLUB+M%C3%8D%C5%A0E%C5%87SK%C3%81/@50.0876696,14.4080139,17z
-https://www.google.com/maps/place/Lok%C3%A1l+Dlouh%C3%A1%C3%A1%C3%A1/@50.0906931,14.4257574,17z
-https://www.google.com/maps/place/Jel%C3%ADnkova+plze%C5%88sk%C3%A1+pivnice/@50.0816721,14.4221297,17z
+https://www.google.com/maps/place/CAF%C3%89+CLUB+M%C3%8D%C5%A0E%C5%87SK%C3%81/@50.0876696,14.4080139,17z | ka-FAY club MEE-shenny-skah
+https://www.google.com/maps/place/Lok%C3%A1l+Dlouh%C3%A1%C3%A1%C3%A1/@50.0906931,14.4257574,17z | LOH-kaal DLOH-haa
+https://www.google.com/maps/place/Jel%C3%ADnkova+plze%C5%88sk%C3%A1+pivnice/@50.0816721,14.4221297,17z | YEL-een-ko-va PL-zenny-skah PIV-nyi-tse
 https://www.google.com/maps/place/McCarthy's+Irish+Pub/@50.0841848,14.4213459,17z
 https://www.google.com/maps/place/Waxy+Malone's/@50.0883134,14.4216625,17z
 https://www.google.com/maps/place/The+Wall+Pub/@50.0862759,14.4080871,17z
-https://www.google.com/maps/place/Cafe+skautsky+institut/@50.0829361,14.4079554,17z
-https://www.google.com/maps/place/U+Zlat%C3%A9ho+tygra/@50.0858565,14.4180513,17z
-https://www.google.com/maps/place/Zahr%C3%A1dky+Letn%C3%A1+Beer+Garden/@50.0961842,14.4257359,17z
+https://www.google.com/maps/place/Cafe+skautsky+institut/@50.0829361,14.4079554,17z | KAH-feh SKOWT-skee IN-sti-tut
+https://www.google.com/maps/place/U+Zlat%C3%A9ho+tygra/@50.0858565,14.4180513,17z | oo ZLA-teh-ho TI-gra
+https://www.google.com/maps/place/Zahr%C3%A1dky+Letn%C3%A1+Beer+Garden/@50.0961842,14.4257359,17z | ZA-hraad-ki LET-naa beer garden
