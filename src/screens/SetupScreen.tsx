@@ -38,7 +38,7 @@ export function SetupScreen() {
         onKeyDown={(e) => {
           if (e.key === 'Enter') submit();
         }}
-        placeholder={copy.setup.placeholder}
+
         autoFocus
         autoComplete="off"
         enterKeyHint="go"
