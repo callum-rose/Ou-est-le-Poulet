@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { copy } from '../config/app.config';
 import { pubs } from '../config/data';
 import { useGame } from '../state/GameContext';
@@ -15,6 +15,7 @@ import { AlreadySearchedScreen } from './AlreadySearchedScreen';
 
 export function HuntScreen() {
   const { state, dispatch } = useGame();
+  const navigate = useNavigate();
   // Mount the geolocation controller so polling runs while hunting.
   useGeolocation();
 
@@ -87,9 +88,9 @@ export function HuntScreen() {
         <BigButton variant="success" onClick={() => setConfirmFound(true)}>
           {copy.hunt.foundCta}
         </BigButton>
-        <div className="link-row">
-          <Link to="/stats">Stats</Link>
-        </div>
+        <BigButton variant="primary" onClick={() => navigate('/stats')}>
+          Stats
+        </BigButton>
       </footer>
 
       {confirmFound && (
