@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { GameProvider, useGame } from './state/GameContext';
 import { PHASE_EXEMPT_ROUTES, routeForPhase } from './state/routes';
+import { AppHeader } from './components/ui/AppHeader';
 import { SetupScreen } from './screens/SetupScreen';
 import { ReadyScreen } from './screens/ReadyScreen';
 import { HuntScreen } from './screens/HuntScreen';
@@ -42,6 +43,7 @@ function AppRoutes() {
   return (
     <>
       <PhaseGate />
+      <AppHeader />
       <Routes>
         <Route path="/" element={<SetupScreen />} />
         <Route path="/ready" element={<ReadyScreen />} />
