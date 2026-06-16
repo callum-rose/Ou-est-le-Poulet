@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { copy } from '../config/app.config';
-import { pubs } from '../config/data';
+import { challenges, pubs } from '../config/data';
 import { useGame } from '../state/GameContext';
 import {
   approxDistanceM,
+  challengeProgress,
   completedVisits,
-  dwellMs,
+  progressTimeline,
   totalTimeMs,
 } from '../state/selectors';
 import { clearState } from '../state/persistence';
@@ -30,6 +31,8 @@ export function StatsScreen() {
   }, [state.finishedAt]);
 
   const visits = useMemo(() => completedVisits(state), [state]);
+  const progress = useMemo(() => challengeProgress(state), [state]);
+  const timeline = useMemo(() => progressTimeline(state), [state]);
   const [confirmReset, setConfirmReset] = useState(false);
 
   const reset = () => {
@@ -55,6 +58,17 @@ export function StatsScreen() {
         </>
       }
     >
+      <div className="progress-banner">
+        <div className="progress-banner__count">
+          {progress.done} of {progress.total} {copy.stats.challengesDoneLabel}
+        </div>
+        <p className="progress-banner__message">
+          {progress.remaining > 0
+            ? copy.stats.nextChallengeMessage
+            : copy.stats.allChallengesDone}
+        </p>
+      </div>
+
       <div className="stat-grid">
         <Stat value={formatDuration(totalTimeMs(state, now))} label={copy.statLabels.totalTime} />
         <Stat value={String(visits.length)} label={copy.statLabels.pubsSearched} />
@@ -66,17 +80,47 @@ export function StatsScreen() {
       </div>
       <p className="muted">{copy.stats.distanceDisclaimer}</p>
 
-      {visits.length > 0 && (
+      {timeline.length > 0 && (
         <div>
           <h2>{copy.stats.pubsInOrderHeading}</h2>
-          <ol className="cheat-list">
-            {visits.map((v) => {
-              const name = pubs.find((p) => p.id === v.pubId)?.name ?? v.pubId;
+          <ol className="timeline">
+            {timeline.map((stop, i) => {
+              const name = stop.pubId
+                ? pubs.find((p) => p.id === stop.pubId)?.name ?? stop.pubId
+                : copy.stats.introStopLabel;
+              const challenge =
+                stop.challengeIndex !== null ? challenges[stop.challengeIndex] : undefined;
+              const dwell =
+                stop.arrivedAt !== null && stop.completedAt !== null && stop.pubId
+                  ? stop.completedAt - stop.arrivedAt
+                  : null;
               return (
-                <li key={`${v.pubId}-${v.arrivedAt}`}>
-                  <strong>{name}</strong>
-                  <div className="muted" style={{ fontSize: 14 }}>
-                    {formatClock(v.arrivedAt)} · {copy.stats.dwellLabel} {formatDuration(dwellMs(v))}
+                <li
+                  className="timeline__item"
+                  key={`${stop.pubId ?? 'intro'}-${stop.arrivedAt ?? i}`}
+                >
+                  <time className="timeline__time">
+                    {stop.arrivedAt !== null ? formatClock(stop.arrivedAt) : ''}
+                  </time>
+                  <div className="timeline__body">
+                    <div className="timeline__head">
+                      <strong className="timeline__name">{name}</strong>
+                      {dwell !== null && (
+                        <span className="timeline__dwell">
+                          {copy.stats.dwellLabel} {formatDuration(dwell)}
+                        </span>
+                      )}
+                    </div>
+                    {challenge ? (
+                      <div className="challenge-done">
+                        <span className="challenge-done__title">{challenge.title}</span>
+                        <span className="challenge-done__desc">{challenge.description}</span>
+                      </div>
+                    ) : (
+                      <div className="challenge-done challenge-done--none">
+                        {copy.stats.noChallengeLabel}
+                      </div>
+                    )}
                   </div>
                 </li>
               );

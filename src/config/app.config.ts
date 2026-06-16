@@ -8,7 +8,7 @@ export const appConfig = {
   schemaVersion: 1,
 
   /** Loop back to challenge #1 when the list is exhausted. */
-  loopChallenges: true,
+  loopChallenges: false,
 
   /** Light foreground GPS polling cadence. */
   pollIntervalMs: 60_000,
@@ -64,7 +64,7 @@ export const copy = {
     body: 'Pick a pub to search. The stag is hiding in one of them.',
     pickPrompt: 'Choose a pub to search',
     foundCta: 'We found him! 🎉',
-    statsLink: 'Stats',
+    statsLink: 'Progress',
     allSearchedNotice:
       "You've searched every pub — he must be in one you've been to. Time for the WhatsApp clues!",
     foundConfirm: 'Found the stag? This ends the game and stamps your finish time.',
@@ -99,7 +99,7 @@ export const copy = {
     heading: 'You found him! 🏆',
     shareCta: 'Share result',
     shareCopied: 'Copied to clipboard',
-    statsLink: 'Full stats',
+    statsLink: 'Progress',
     resumeHuntCta: 'Resume hunt',
     routeHeading: 'Your route',
   },
@@ -112,8 +112,14 @@ export const copy = {
     resetConfirmCta: 'Yes, wipe everything',
     resetCancel: 'Cancel',
     backCta: 'Back',
-    pubsInOrderHeading: 'Pubs in order',
+    pubsInOrderHeading: 'Your route',
     dwellLabel: 'dwell',
+    challengesDoneLabel: 'challenges done',
+    nextChallengeMessage: 'Get to the next pub for your next challenge.',
+    allChallengesDone:
+      "You've completed every challenge — nice work! Now just find the stag.",
+    introStopLabel: 'Before you set off',
+    noChallengeLabel: 'No challenge this round',
   },
   geo: {
     denied:
@@ -133,6 +139,7 @@ export const copy = {
   },
   appHeader: {
     rulesAriaLabel: 'Rules',
+    progressAriaLabel: 'Your progress',
   },
   pubList: {
     searchedBadge: '✓ searched',

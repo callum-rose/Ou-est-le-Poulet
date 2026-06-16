@@ -56,10 +56,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'START_GAME': {
       if (state.phase !== 'ready') return state;
       // Start the clock and drop straight into an opening challenge (no pub).
-      // It consumes the cursor, so the first pub gets the next challenge.
+      // It consumes the cursor, so the first pub gets the next challenge. When
+      // not looping, the cursor passes straight through: once it runs past the
+      // list the index is out of range and no challenge is shown.
       const introChallengeIndex = action.loop
         ? state.challengeCursor % action.challengeCount
-        : Math.min(state.challengeCursor, action.challengeCount - 1);
+        : state.challengeCursor;
       return {
         ...state,
         phase: 'challenge',
@@ -99,9 +101,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         return { ...state, phase: 'hunting', pendingPubId: null };
       }
 
+      // Not looping: the cursor passes straight through. Once it runs past the
+      // list the index is out of range, so the pub is still searchable but
+      // hands out no challenge.
       const challengeIndex = action.loop
         ? state.challengeCursor % action.challengeCount
-        : Math.min(state.challengeCursor, action.challengeCount - 1);
+        : state.challengeCursor;
 
       const visit: Visit = {
         pubId,

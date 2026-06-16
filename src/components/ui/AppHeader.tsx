@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { copy } from '../../config/app.config';
 import { useGame } from '../../state/GameContext';
 import { phaseOrder } from '../../state/routes';
-import { totalTimeMs } from '../../state/selectors';
+import { challengeProgress, totalTimeMs } from '../../state/selectors';
 import { formatDuration } from '../../lib/time';
 
 const ORGANISER_TAPS = 3;
@@ -47,6 +47,10 @@ export function AppHeader() {
   const showRulesButton =
     phaseOrder[state.phase] >= phaseOrder.rules && pathname !== '/rules';
 
+  // Progress (challenges + route) becomes reachable once the hunt is underway.
+  const showProgressButton = state.startedAt !== null && pathname !== '/stats';
+  const progress = challengeProgress(state);
+
   return (
     <header className="app-header">
       <div className="app-header__inner">
@@ -57,6 +61,21 @@ export function AppHeader() {
           <span className="app-header__timer" onClick={() => navigate('/stats')}>{formatDuration(elapsedMs)}</span>
         )}
         <div className="app-header__right">
+          {showProgressButton && (
+            <button
+              className="app-header__progress-btn"
+              onClick={() => navigate('/stats')}
+              aria-label={copy.appHeader.progressAriaLabel}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+              <span className="app-header__progress-badge">
+                {progress.done}/{progress.total}
+              </span>
+            </button>
+          )}
           {showRulesButton && (
             <button
               className="app-header__rules-btn"
