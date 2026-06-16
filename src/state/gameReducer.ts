@@ -107,6 +107,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, phase: 'found', finishedAt: action.at };
     }
 
+    case 'RESUME_HUNT': {
+      if (state.phase !== 'found') return state;
+      return { ...state, phase: 'hunting', finishedAt: null };
+    }
+
     case 'PUSH_BREADCRUMB': {
       const crumb = action.crumb;
       const next = [...state.breadcrumbs, crumb];

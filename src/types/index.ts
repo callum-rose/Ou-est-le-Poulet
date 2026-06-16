@@ -63,6 +63,7 @@ export type GameAction =
   | { type: 'CANCEL_ARRIVAL' }
   | { type: 'COMPLETE_PUB'; at: number }
   | { type: 'FOUND_STAG'; at: number }
+  | { type: 'RESUME_HUNT' }
   | { type: 'PUSH_BREADCRUMB'; crumb: Breadcrumb; cap: number }
   | { type: 'SET_GEO_STATUS'; status: GeoStatus }
   | { type: 'RESET_GAME' };
