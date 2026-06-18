@@ -59,7 +59,7 @@ export const copy = {
     },
     ready: {
         heading: 'Ready to hunt?',
-        body: "Tap Ready to start the clock. Give your location when asked.",
+        body: "Don't tap Ready until everybody is ready.",
         cta: "Ready!",
     },
     hunt: {
@@ -168,7 +168,6 @@ export const copy = {
 
     rules: [
         'Jack is hiding in one of the pubs on the list.',
-        'Don\'t press Ready until everyone is ready.',
         'Pick a pub, then complete the challenge on your way there.',
         'Jack judges challenges over WhatsApp.',
         'Once a challenge is complete you can move on to the next pub.',
