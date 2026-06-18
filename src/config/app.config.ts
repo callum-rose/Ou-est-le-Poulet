@@ -61,6 +61,11 @@ export const copy = {
         heading: 'Ready to hunt?',
         body: "Don't tap Ready until everybody is ready.",
         cta: "Ready!",
+        // Shown before the browser's location permission prompt to explain why.
+        locationExplainer:
+            "We use your location to show you on the map and measure how close you are to each pub. Your next tap will ask for permission — please allow it.",
+        locationExplainerCta: 'Got it',
+        locationExplainerCancel: 'Skip for now',
     },
     hunt: {
         heading: 'Where to next?',
