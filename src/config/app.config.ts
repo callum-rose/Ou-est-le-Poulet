@@ -106,7 +106,7 @@ export const copy = {
     challenge: {
         heading: 'Your challenge',
         completedCta: 'Challenge completed',
-        noneLeft: "You've finished every challenge — nice work. Keep hunting, no challenge this round.",
+        noneLeft: "You've finished every pub challenge. Have a chilled one!",
         approvalConfirm: 'Confirm that Jack has approved this?',
         approvalConfirmCta: 'Yes',
         approvalCancel: 'No',
