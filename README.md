@@ -1,4 +1,4 @@
-# Pub Hunt
+# Ou est le Poulet
 
 A mobile-first web game built for a stag do in Prague. The stag hides in one of
 the city's pubs, and teams race around town — drinking, completing challenges,
