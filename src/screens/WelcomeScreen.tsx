@@ -18,7 +18,7 @@ export function WelcomeScreen() {
       }
     >
       <p>{copy.welcome.body}</p>
-      <img src={`${import.meta.env.BASE_URL}IMG_2317_3.jpeg`} alt={copy.welcome.photoAlt} className="welcome__photo" />
+      <img src={`${import.meta.env.BASE_URL}welcome-chicken.jpg`} alt={copy.welcome.photoAlt} className="welcome__photo" />
     </Screen>
   );
 }
