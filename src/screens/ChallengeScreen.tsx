@@ -34,9 +34,15 @@ export function ChallengeScreen() {
       title={copy.challenge.heading}
       subtitle={pub ? `At ${pub.name}` : undefined}
       footer={
-        <BigButton variant="success" onClick={() => setConfirming(true)}>
-          {copy.challenge.completedCta}
-        </BigButton>
+        challenge ? (
+          <BigButton variant="success" onClick={() => setConfirming(true)}>
+            {copy.challenge.completedCta}
+          </BigButton>
+        ) : (
+          <BigButton variant="primary" onClick={complete}>
+            {copy.challenge.continueCta}
+          </BigButton>
+        )
       }
     >
       {challenge ? (

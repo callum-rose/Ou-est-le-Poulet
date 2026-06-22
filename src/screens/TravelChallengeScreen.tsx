@@ -47,7 +47,7 @@ export function TravelChallengeScreen() {
           </>
         ) : (
           <BigButton variant="primary" onClick={leave}>
-            {copy.travel.leaveCta}
+            {copy.travel.continueCta}
           </BigButton>
         )
       }
